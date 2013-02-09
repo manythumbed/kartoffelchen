@@ -15,7 +15,7 @@ func (p Pitch) absolutePitch() int {
 
 func (p Pitch) Transpose(semitones int) Pitch {
 	t := p.absolutePitch() + semitones
-	if t < 0 && t % 12 != 0	{
+	if t < 0 && t%12 != 0 {
 		return Pitch{Octave((t / 12) - 1), NoteIndex((12 + (t % 12)) % 12)}
 	}
 	return Pitch{Octave(t / 12), NoteIndex(t % 12)}
