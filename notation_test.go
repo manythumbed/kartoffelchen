@@ -8,15 +8,15 @@ func TestPitchTransposition(t *testing.T) {
 	}
 }
 
-func TestNoteTransposition(t *testing.T)	{
+func TestNoteTransposition(t *testing.T) {
 	n1 := Note{Pitch{4, 0}, 1}
 	n2 := Note{Pitch{4, 1}, 1}
-	if n1.Transpose(1) != n2	{
+	if n1.Transpose(1) != n2 {
 		t.Errorf("Incorrect transposition. Expected %v for transposition of %d, received %v", n1, 1, n2)
 	}
 }
 
-func TestRestTranspositions(t *testing.T)	{
+func TestRestTranspositions(t *testing.T) {
 	r1 := Rest{1}
 	r2 := r1.Transpose(1)
 	if r1 != r2 {
@@ -24,65 +24,61 @@ func TestRestTranspositions(t *testing.T)	{
 	}
 }
 
-type transpositionCheck struct {
+type pitchTranspositions struct {
 	original, transposed Pitch
 	amount               int
 }
 
-func (c transpositionCheck) check(t *testing.T) {
+func (c pitchTranspositions) check(t *testing.T) {
 	if x := c.original.Transpose(c.amount); x != c.transposed {
 		t.Errorf("Expected pitch %v to be %v after transposition of %d, recieved %v", c.original, c.transposed, c.amount, x)
 	}
 }
 
-var transpositions = []transpositionCheck{
-	transpositionCheck{Pitch{4, 0}, Pitch{4, 0}, 0},
-	transpositionCheck{Pitch{4, 0}, Pitch{4, 1}, 1},
-	transpositionCheck{Pitch{4, 0}, Pitch{5, 0}, 12},
-	transpositionCheck{Pitch{4, 0}, Pitch{3, 0}, -12},
-	transpositionCheck{Pitch{4, 0}, Pitch{3, 11}, -1},
-	transpositionCheck{Pitch{0, 0}, Pitch{-1, 11}, -1},
-	transpositionCheck{Pitch{0, 0}, Pitch{-1, 0}, -12},
-	transpositionCheck{Pitch{0, 0}, Pitch{-2, 11}, -13},
-	transpositionCheck{Pitch{-2, 11}, Pitch{-3, 10}, -13},
+var transpositions = []pitchTranspositions{
+	pitchTranspositions{Pitch{4, 0}, Pitch{4, 0}, 0},
+	pitchTranspositions{Pitch{4, 0}, Pitch{4, 1}, 1},
+	pitchTranspositions{Pitch{4, 0}, Pitch{5, 0}, 12},
+	pitchTranspositions{Pitch{4, 0}, Pitch{3, 0}, -12},
+	pitchTranspositions{Pitch{4, 0}, Pitch{3, 11}, -1},
+	pitchTranspositions{Pitch{0, 0}, Pitch{-1, 11}, -1},
+	pitchTranspositions{Pitch{0, 0}, Pitch{-1, 0}, -12},
+	pitchTranspositions{Pitch{0, 0}, Pitch{-2, 11}, -13},
+	pitchTranspositions{Pitch{-2, 11}, Pitch{-3, 10}, -13},
 }
 
-func TestSeqAndComb(t *testing.T)	{
-	n1 := Note{Pitch{4, 0}, 1}
-	n2 := Note{Pitch{4, 2}, 1}
-	n3 := Note{Pitch{4, 4}, 1}
-	r1 := Rest{1}
-	r2 := Rest{2}
+func TestSeqTranspositon(t *testing.T) {
+	s1 := seq{[]interface{}{
+		Note{Pitch{4, 0}, 1},
+		Note{Pitch{4, 2}, 1},
+		Note{Pitch{4, 4}, 1},
+	}}
 
-	s1 := seq{}
-	s1.AddNote(n1)
-	s1.AddRest(r1)
-	s1.AddNote(n2)
-	s1.AddRest(r2)
-	s1.AddNote(n3)
+	s2 := seq{[]interface{}{
+		Note{Pitch{4, 1}, 1},
+		Note{Pitch{4, 3}, 1},
+		Note{Pitch{4, 5}, 1},
+	}}
 
-	t.Errorf("%v", s1)
-
-	c1 := comb{}
-	c1.AddNote(n1)
-	c1.AddNote(n2)
-	c1.AddNote(n3)
-	t.Errorf("%v", c1)
-
-	s1.AddComb(c1)
-	s1.AddNote(n1)
-	t.Errorf("%v", s1)
-
-	c2 := comb{}
-	c2.AddSeq(s1)
-	c2.AddSeq(s1)
-	t.Errorf("%v", c2)
+	if !s2.equal(s1.Transpose(1).(seq)) {
+		t.Errorf("Expected seq %v to be %v after transposition of %d, recieved %v", s1, s1.Transpose(1), 1, s2)
+	}
 }
 
-/*
-func TestTransposer(t *testing.T)	{
-	n := Note{Pitch{4, 0}, 1}
-	t.Errorf("%v", n.Transposed(1))
-	t.Errorf("%v", n.Transposed(-12))
+func (s seq) equal(s1 seq) bool {
+	if len(s.contents) == len(s1.contents) {
+		for index := range s.contents {
+			switch i := s.contents[index].(type) {
+			case Note:
+				if j, ok := s1.contents[index].(Note); !ok {
+					return false
+				} else if i != j {
+					return false
+				}
+			}
+		}
+		return true
+	}
+
+	return false
 }
-*/

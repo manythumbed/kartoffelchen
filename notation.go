@@ -13,7 +13,7 @@ type Pitch struct {
 	NoteIndex
 }
 
-type Transposer interface	{
+type Transposer interface {
 	Transpose(semitones int) Transposer
 }
 
@@ -52,7 +52,7 @@ type seq struct {
 	contents []interface{}
 }
 
-func (s seq) String() string	{
+func (s seq) String() string {
 	return fmt.Sprintf("[seq %v]", s.contents)
 }
 
@@ -64,26 +64,46 @@ func (s *seq) AddRest(r Rest) {
 	s.contents = append(s.contents, r)
 }
 
-func (s *seq) AddComb(c comb)	{
+func (s *seq) AddComb(c comb) {
 	s.contents = append(s.contents, c)
 }
 
-type comb struct	{
+func (s seq) Transpose(semitones int) Transposer {
+	return seq{transposeSlice(s.contents, semitones)}
+}
+
+func transposeSlice(s []interface{}, semitones int) []interface{} {
+	t := []interface{}{}
+	for _, item := range s {
+		if original, ok := item.(Transposer); ok {
+			t = append(t, original.Transpose(semitones))
+		} else {
+			t = append(t, item)
+		}
+	}
+	return t
+}
+
+type comb struct {
 	contents []interface{}
 }
 
-func (c comb) String() string	{
+func (c comb) String() string {
 	return fmt.Sprintf("[comb %v]", c.contents)
 }
 
-func (c *comb) AddNote(n Note)	{
+func (c *comb) AddNote(n Note) {
 	c.contents = append(c.contents, n)
 }
 
-func (c *comb) AddRest(r Rest)	{
+func (c *comb) AddRest(r Rest) {
 	c.contents = append(c.contents, r)
 }
 
-func (c *comb) AddSeq(s seq)	{
+func (c *comb) AddSeq(s seq) {
 	c.contents = append(c.contents, s)
+}
+
+func (c comb) Transpose(semitones int) Transposer {
+	return comb{transposeSlice(c.contents, semitones)}
 }
