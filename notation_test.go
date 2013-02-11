@@ -8,6 +8,22 @@ func TestPitchTransposition(t *testing.T) {
 	}
 }
 
+func TestNoteTransposition(t *testing.T)	{
+	n1 := Note{Pitch{4, 0}, 1}
+	n2 := Note{Pitch{4, 1}, 1}
+	if n1.Transpose(1) != n2	{
+		t.Errorf("Incorrect transposition. Expected %v for transposition of %d, received %v", n1, 1, n2)
+	}
+}
+
+func TestRestTranspositions(t *testing.T)	{
+	r1 := Rest{1}
+	r2 := r1.Transpose(1)
+	if r1 != r2 {
+		t.Errorf("Incorrect transposition. Expected %v for transposition of %d, received %v", r1, 1, r2)
+	}
+}
+
 type transpositionCheck struct {
 	original, transposed Pitch
 	amount               int
@@ -62,3 +78,11 @@ func TestSeqAndComb(t *testing.T)	{
 	c2.AddSeq(s1)
 	t.Errorf("%v", c2)
 }
+
+/*
+func TestTransposer(t *testing.T)	{
+	n := Note{Pitch{4, 0}, 1}
+	t.Errorf("%v", n.Transposed(1))
+	t.Errorf("%v", n.Transposed(-12))
+}
+*/

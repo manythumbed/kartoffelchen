@@ -13,11 +13,15 @@ type Pitch struct {
 	NoteIndex
 }
 
+type Transposer interface	{
+	Transpose(semitones int) Transposer
+}
+
 func (p Pitch) absolutePitch() int {
 	return int(p.Octave*12) + int(p.NoteIndex)
 }
 
-func (p Pitch) Transpose(semitones int) Pitch {
+func (p Pitch) Transpose(semitones int) Transposer {
 	t := p.absolutePitch() + semitones
 	if t < 0 && t%12 != 0 {
 		return Pitch{Octave((t / 12) - 1), NoteIndex((12 + (t % 12)) % 12)}
@@ -32,15 +36,15 @@ type Note struct {
 	Duration
 }
 
-func (n Note) Transpose(semitones int) Note {
-	return Note{n.Pitch.Transpose(semitones), n.Duration}
+func (n Note) Transpose(semitones int) Transposer {
+	return Note{n.Pitch.Transpose(semitones).(Pitch), n.Duration}
 }
 
 type Rest struct {
 	Duration
 }
 
-func (r Rest) Transpose(semitones int) Rest {
+func (r Rest) Transpose(semitones int) Transposer {
 	return Rest{r.Duration}
 }
 
