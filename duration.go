@@ -8,6 +8,17 @@ type rational struct {
 	num, denom int
 }
 
+func add(a, b rational) rational {
+	l := lcm(a.denom, b.denom)
+	c, d := reduce((a.num*(l/a.denom))+(b.num*(l/b.denom)), l)
+	return rational{c, d}
+}
+
+func scale(a, b rational) rational {
+	c, d := reduce(a.num*b.num, a.denom*b.denom)
+	return rational{c, d}
+}
+
 func gcd(a, b int) int {
 	if b == 0 {
 		return a
@@ -26,10 +37,4 @@ func abs(a int) int {
 
 func lcm(a, b int) int {
 	return abs(a*b) / gcd(a, b)
-}
-
-func add(a, b rational) rational {
-	l := lcm(a.denom, b.denom)
-	c, d := reduce((a.num*(a.denom/l))+(b.num*(b.denom/l)), l)
-	return rational{c, d}
 }
