@@ -52,16 +52,18 @@ func TestSeqTranspositon(t *testing.T) {
 		Note{Pitch{4, 0}, 1},
 		Note{Pitch{4, 2}, 1},
 		Note{Pitch{4, 4}, 1},
+		Rest{1},
 	}}
 
 	s2 := seq{[]interface{}{
 		Note{Pitch{4, 1}, 1},
 		Note{Pitch{4, 3}, 1},
 		Note{Pitch{4, 5}, 1},
+		Rest{1},
 	}}
 
 	if !s2.equal(s1.Transpose(1).(seq)) {
-		t.Errorf("Expected seq %v to be %v after transposition of %d, recieved %v", s1, s1.Transpose(1), 1, s2)
+		t.Errorf("Expected seq %v to be %v after transposition of %d, recieved %v", s1, s2, 1, s1.Transpose(1))
 	}
 }
 
@@ -71,6 +73,12 @@ func (s seq) equal(s1 seq) bool {
 			switch i := s.contents[index].(type) {
 			case Note:
 				if j, ok := s1.contents[index].(Note); !ok {
+					return false
+				} else if i != j {
+					return false
+				}
+			case Rest:
+				if j, ok := s1.contents[index].(Rest); !ok {
 					return false
 				} else if i != j {
 					return false
