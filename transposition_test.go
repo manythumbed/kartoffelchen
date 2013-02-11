@@ -85,7 +85,7 @@ func TestCombTransposition(t *testing.T) {
 	}
 }
 
-func TestMixedTransposition(t *testing.T)	{
+func TestMixedTransposition(t *testing.T) {
 	m1 := comb{[]interface{}{
 		seq{[]interface{}{
 			Note{Pitch{4, 1}, 1},
@@ -129,11 +129,11 @@ func (s seq) equalSeq(s1 seq) bool {
 	return equalSlice(s.contents, s1.contents)
 }
 
-func (c comb) equalComb(c1 comb) bool	{
+func (c comb) equalComb(c1 comb) bool {
 	return equalSlice(c.contents, c1.contents)
 }
 
-func equalSlice(s1, s2 []interface{}) bool	{
+func equalSlice(s1, s2 []interface{}) bool {
 	if len(s1) == len(s2) {
 		for index := range s1 {
 			switch i := s1[index].(type) {
