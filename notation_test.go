@@ -31,14 +31,34 @@ var transpositions = []transpositionCheck{
 	transpositionCheck{Pitch{-2, 11}, Pitch{-3, 10}, -13},
 }
 
-func TestMusic(t * testing.T)	{
-	m := Music{}
-	m.AddNote(Note{Pitch{4, 0}, 1})
-	m.AddRest(Rest{1})
+func TestSeqAndComb(t *testing.T)	{
+	n1 := Note{Pitch{4, 0}, 1}
+	n2 := Note{Pitch{4, 2}, 1}
+	n3 := Note{Pitch{4, 4}, 1}
+	r1 := Rest{1}
+	r2 := Rest{2}
 
-	n := Music{}
-	n.AddRest(Rest{1})
-	m.Add(n)
-	m.Combine(n)
-	t.Errorf("%v", m)
+	s1 := seq{}
+	s1.AddNote(n1)
+	s1.AddRest(r1)
+	s1.AddNote(n2)
+	s1.AddRest(r2)
+	s1.AddNote(n3)
+
+	t.Errorf("%v", s1)
+
+	c1 := comb{}
+	c1.AddNote(n1)
+	c1.AddNote(n2)
+	c1.AddNote(n3)
+	t.Errorf("%v", c1)
+
+	s1.AddComb(c1)
+	s1.AddNote(n1)
+	t.Errorf("%v", s1)
+
+	c2 := comb{}
+	c2.AddSeq(s1)
+	c2.AddSeq(s1)
+	t.Errorf("%v", c2)
 }

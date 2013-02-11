@@ -1,5 +1,9 @@
 package kartoffelchen
 
+import (
+	"fmt"
+)
+
 type Octave int
 
 type NoteIndex int
@@ -40,61 +44,42 @@ func (r Rest) Transpose(semitones int) Rest {
 	return Rest{r.Duration}
 }
 
-type MusicalEvent interface {
-	Pitched() bool
-	GetPitch() *Pitch
-	GetDuration() Duration
+type seq struct {
+	contents []interface{}
 }
 
-func (r Rest) Pitched() bool	{
-	return false
+func (s seq) String() string	{
+	return fmt.Sprintf("[seq %v]", s.contents)
 }
 
-func (r Rest) GetPitch() *Pitch	{
-	return nil
+func (s *seq) AddNote(n Note) {
+	s.contents = append(s.contents, n)
 }
 
-func (r Rest) GetDuration() Duration	{
-	return r.Duration
+func (s *seq) AddRest(r Rest) {
+	s.contents = append(s.contents, r)
 }
 
-/*
-func (n Note) Pitched() bool {
-	return true
+func (s *seq) AddComb(c comb)	{
+	s.contents = append(s.contents, c)
 }
 
-func (n Note) GetPitch() Pitch {
-	return &n.Pitch
+type comb struct	{
+	contents []interface{}
 }
 
-func (n Note) GetDuration() Duration {
-	return n.Duration
-}
-*/
-
-/*
-	Music is a sequence of musical events, sequential composition
-	or parallel composition
-*/
-type Sequential []MusicalEvent
-type Parallel []MusicalEvent
-
-type Music struct	{
-	music []interface{}
+func (c comb) String() string	{
+	return fmt.Sprintf("[comb %v]", c.contents)
 }
 
-func (m *Music) AddNote(e Note)	{
-	m.music = append(m.music, e)
+func (c *comb) AddNote(n Note)	{
+	c.contents = append(c.contents, n)
 }
 
-func (m *Music) AddRest(r Rest)	{
-	m.music = append(m.music, r)
+func (c *comb) AddRest(r Rest)	{
+	c.contents = append(c.contents, r)
 }
 
-func (m *Music) Add(music Music)	{
-	m.music = append(m.music, music.music...)
-}
-
-func (m *Music) Combine(music Music)	{
-	m.music = []interface{}{m.music, music.music}
+func (c *comb) AddSeq(s seq)	{
+	c.contents = append(c.contents, s)
 }
