@@ -1,13 +1,16 @@
 package kartoffelchen
 
-import "testing"
+import (
+	"sort"
+	"testing"
+)
 
 func TestAddition(t *testing.T) {
 	a := [][]rational{
-		[]rational{rational{1, 1}, rational{1, 1}, rational{2, 1}},
-		[]rational{rational{1, 2}, rational{1, 2}, rational{1, 1}},
-		[]rational{rational{1, 2}, rational{1, 3}, rational{5, 6}},
-		[]rational{rational{2, 21}, rational{1, 6}, rational{11, 42}},
+		[]rational{{1, 1}, {1, 1}, {2, 1}},
+		[]rational{{1, 2}, {1, 2}, {1, 1}},
+		[]rational{{1, 2}, {1, 3}, {5, 6}},
+		[]rational{{2, 21}, {1, 6}, {11, 42}},
 	}
 
 	for _, data := range a {
@@ -19,15 +22,44 @@ func TestAddition(t *testing.T) {
 
 func TestScale(t *testing.T) {
 	a := [][]rational{
-		[]rational{rational{1, 1}, rational{1, 1}, rational{1, 1}},
-		[]rational{rational{1, 2}, rational{1, 2}, rational{1, 4}},
-		[]rational{rational{1, 2}, rational{7, 3}, rational{7, 6}},
-		[]rational{rational{2, 21}, rational{1, 6}, rational{1, 63}},
+		[]rational{{1, 1}, {1, 1}, {1, 1}},
+		[]rational{{1, 2}, {1, 2}, {1, 4}},
+		[]rational{{1, 2}, {7, 3}, {7, 6}},
+		[]rational{{2, 21}, {1, 6}, {1, 63}},
 	}
 
 	for _, data := range a {
 		if x := scale(data[0], data[1]); x != data[2] {
 			t.Errorf("When scaling %d by %d expected %d and received %d", data[0], data[1], data[2], x)
+		}
+	}
+}
+
+func TestSort(t *testing.T) {
+	s := rationals{
+		{1, 1},
+		{1, 2},
+		{1, 3},
+		{3, 2},
+		{4, 2},
+		{1, 4},
+		{2, 3},
+	}
+
+	s1 := rationals{
+		{1, 4},
+		{1, 3},
+		{1, 2},
+		{2, 3},
+		{1, 1},
+		{3, 2},
+		{4, 2},
+	}
+
+	sort.Sort(s)
+	for i := range s1 {
+		if s1[i] != s[i] {
+			t.Errorf("Value of sorted array, %v, is not equal to expected value, %v", s[i], s1[i])
 		}
 	}
 }
