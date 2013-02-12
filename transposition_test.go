@@ -32,15 +32,15 @@ var transpositions = []pitchTranspositions{
 }
 
 func TestNoteTransposition(t *testing.T) {
-	n1 := Note{Pitch{4, 0}, 1}
-	n2 := Note{Pitch{4, 1}, 1}
+	n1 := Note{Pitch{4, 0}, Duration{1, 1}}
+	n2 := Note{Pitch{4, 1}, Duration{1, 1}}
 	if n1.Transpose(1) != n2 {
 		t.Errorf("Incorrect transposition. Expected %v for transposition of %d, received %v", n1, 1, n2)
 	}
 }
 
 func TestRestTranspositions(t *testing.T) {
-	r1 := Rest{1}
+	r1 := Rest{Duration{1, 1}}
 	r2 := r1.Transpose(1)
 	if r1 != r2 {
 		t.Errorf("Incorrect transposition. Expected %v for transposition of %d, received %v", r1, 1, r2)
@@ -49,17 +49,17 @@ func TestRestTranspositions(t *testing.T) {
 
 func TestSeqTranspositon(t *testing.T) {
 	s1 := seq{[]interface{}{
-		Note{Pitch{4, 0}, 1},
-		Note{Pitch{4, 2}, 1},
-		Note{Pitch{4, 4}, 1},
-		Rest{1},
+		Note{Pitch{4, 0}, Duration{1, 1}},
+		Note{Pitch{4, 2}, Duration{1, 1}},
+		Note{Pitch{4, 4}, Duration{1, 1}},
+		Rest{Duration{1, 1}},
 	}}
 
 	s2 := seq{[]interface{}{
-		Note{Pitch{4, 1}, 1},
-		Note{Pitch{4, 3}, 1},
-		Note{Pitch{4, 5}, 1},
-		Rest{1},
+		Note{Pitch{4, 1}, Duration{1, 1}},
+		Note{Pitch{4, 3}, Duration{1, 1}},
+		Note{Pitch{4, 5}, Duration{1, 1}},
+		Rest{Duration{1, 1}},
 	}}
 
 	if !s2.equalSeq(s1.Transpose(1).(seq)) {
@@ -69,15 +69,15 @@ func TestSeqTranspositon(t *testing.T) {
 
 func TestCombTransposition(t *testing.T) {
 	c1 := comb{[]interface{}{
-		Note{Pitch{4, 0}, 1},
-		Note{Pitch{4, 2}, 1},
-		Note{Pitch{4, 4}, 1},
+		Note{Pitch{4, 0}, Duration{1, 1}},
+		Note{Pitch{4, 2}, Duration{1, 1}},
+		Note{Pitch{4, 4}, Duration{1, 1}},
 	}}
 
 	c2 := comb{[]interface{}{
-		Note{Pitch{4, 1}, 1},
-		Note{Pitch{4, 3}, 1},
-		Note{Pitch{4, 5}, 1},
+		Note{Pitch{4, 1}, Duration{1, 1}},
+		Note{Pitch{4, 3}, Duration{1, 1}},
+		Note{Pitch{4, 5}, Duration{1, 1}},
 	}}
 
 	if !c2.equalComb(c1.Transpose(1).(comb)) {
@@ -88,35 +88,35 @@ func TestCombTransposition(t *testing.T) {
 func TestMixedTransposition(t *testing.T) {
 	m1 := comb{[]interface{}{
 		seq{[]interface{}{
-			Note{Pitch{4, 1}, 1},
-			Note{Pitch{4, 3}, 1},
-			Note{Pitch{4, 5}, 1},
+			Note{Pitch{4, 1}, Duration{1, 1}},
+			Note{Pitch{4, 3}, Duration{1, 1}},
+			Note{Pitch{4, 5}, Duration{1, 1}},
 		}},
 		seq{[]interface{}{
-			Note{Pitch{3, 1}, 1},
-			Note{Pitch{3, 3}, 1},
-			Note{Pitch{3, 5}, 1},
-			comb{[]interface{}{Note{Pitch{2, 11}, 1}, Note{Pitch{5, 2}, 1}}},
+			Note{Pitch{3, 1}, Duration{1, 1}},
+			Note{Pitch{3, 3}, Duration{1, 1}},
+			Note{Pitch{3, 5}, Duration{1, 1}},
+			comb{[]interface{}{Note{Pitch{2, 11}, Duration{1, 1}}, Note{Pitch{5, 2}, Duration{1, 1}}}},
 		}},
 		seq{[]interface{}{
-			Rest{1},
+			Rest{Duration{1, 1}},
 		}},
 	}}
 
 	m2 := comb{[]interface{}{
 		seq{[]interface{}{
-			Note{Pitch{4, 0}, 1},
-			Note{Pitch{4, 2}, 1},
-			Note{Pitch{4, 4}, 1},
+			Note{Pitch{4, 0}, Duration{1, 1}},
+			Note{Pitch{4, 2}, Duration{1, 1}},
+			Note{Pitch{4, 4}, Duration{1, 1}},
 		}},
 		seq{[]interface{}{
-			Note{Pitch{3, 0}, 1},
-			Note{Pitch{3, 2}, 1},
-			Note{Pitch{3, 4}, 1},
-			comb{[]interface{}{Note{Pitch{2, 10}, 1}, Note{Pitch{5, 1}, 1}}},
+			Note{Pitch{3, 0}, Duration{1, 1}},
+			Note{Pitch{3, 2}, Duration{1, 1}},
+			Note{Pitch{3, 4}, Duration{1, 1}},
+			comb{[]interface{}{Note{Pitch{2, 10}, Duration{1, 1}}, Note{Pitch{5, 1}, Duration{1, 1}}}},
 		}},
 		seq{[]interface{}{
-			Rest{1},
+			Rest{Duration{1, 1}},
 		}},
 	}}
 

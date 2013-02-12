@@ -29,7 +29,7 @@ func (p Pitch) Transpose(semitones int) Transposer {
 	return Pitch{Octave(t / 12), NoteIndex(t % 12)}
 }
 
-type Duration int
+type Duration rational
 
 type Note struct {
 	Pitch
