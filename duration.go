@@ -8,6 +8,8 @@ type rational struct {
 	num, denom int
 }
 
+	var zero  = rational{0, 1}
+
 func add(a, b rational) rational {
 	l := lcm(a.denom, b.denom)
 	c, d := reduce((a.num*(l/a.denom))+(b.num*(l/b.denom)), l)

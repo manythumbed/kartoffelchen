@@ -7,6 +7,8 @@ import (
 
 func TestAddition(t *testing.T) {
 	a := [][]rational{
+		[]rational{zero, {1, 1}, {1, 1}},
+		[]rational{{1, 1}, zero, {1, 1}},
 		[]rational{{1, 1}, {1, 1}, {2, 1}},
 		[]rational{{1, 2}, {1, 2}, {1, 1}},
 		[]rational{{1, 2}, {1, 3}, {5, 6}},

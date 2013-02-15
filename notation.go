@@ -107,3 +107,16 @@ func (c *comb) AddSeq(s seq) {
 func (c comb) Transpose(semitones int) Transposer {
 	return comb{transposeSlice(c.contents, semitones)}
 }
+
+type LogicalPosition rational
+
+var origin = LogicalPosition{0, 1}
+
+type MusicalEvent	struct	{
+	LogicalPosition
+	event interface{}
+}
+
+func (s seq) Events(initial LogicalPosition) []MusicalEvent	{
+	return []MusicalEvent{}
+}
