@@ -118,5 +118,10 @@ type MusicalEvent	struct	{
 }
 
 func (s seq) Events(initial LogicalPosition) []MusicalEvent	{
-	return []MusicalEvent{}
+	events := []MusicalEvent{}
+	for _, e := range s.contents	{
+		events = append(events, MusicalEvent{origin, e})
+	}
+
+	return events
 }
