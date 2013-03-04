@@ -1,0 +1,15 @@
+#[link(name = "kartoffelchen", vers = "0.1", author = "manythumbed")];
+
+#[crate_type = "lib"];
+
+#[warn(non_camel_case_types)]
+
+extern mod std;
+
+mod rational;
+mod pitch;
+mod primitives;
+
+fn main()	{
+
+}

@@ -120,7 +120,7 @@ type MusicalEvent	struct	{
 func (s seq) Events(initial LogicalPosition) []MusicalEvent	{
 	events := []MusicalEvent{}
 	for _, e := range s.contents	{
-		events = append(events, MusicalEvent{origin, e})
+		events = append(events, MusicalEvent{initial + , e})
 	}
 
 	return events
