@@ -21,3 +21,6 @@ _testmain.go
 
 *.exe
 *.swp
+
+all-tests
+*.dSYM
