@@ -1,12 +1,14 @@
 extern mod std;
 
+use to_str::ToStr;
+
 #[deriving_eq]
 pub struct Pitch	{
 	octave: int,
 	index: int
 }
 
-pub impl Pitch	{
+pub impl Pitch {
 	fn absolute(&self) -> int { (self.octave * 12) + self.index }
 	fn transpose(&self, transposition: int) -> Pitch {
 		let t = self.absolute() + transposition;
@@ -20,6 +22,12 @@ pub impl Pitch	{
 	}
 }
 
+pub impl Pitch : ToStr	{
+	pure fn to_str() -> ~str	{
+		return fmt!("(%d, %d)", self.octave, self.index);
+	}
+}
+
 #[test]
 fn test_transpose()	{
 	assert Pitch{octave: 4, index: 0}.transpose(0) == Pitch{octave: 4, index: 0};
@@ -29,4 +37,9 @@ fn test_transpose()	{
 	assert Pitch{octave: 0, index: 0}.transpose(-12) == Pitch{octave: -1, index: 0};
 	assert Pitch{octave: 0, index: 0}.transpose(-13) == Pitch{octave: -2, index: 11};
 	assert Pitch{octave: -2, index: 11}.transpose(-13) == Pitch{octave: -3, index: 10};
+}
+
+#[test]
+fn test_to_str()	{
+	assert Pitch::new(4, 0).to_str() == ~"(4, 0)";
 }

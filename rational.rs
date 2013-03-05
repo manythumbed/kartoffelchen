@@ -1,6 +1,6 @@
 extern mod std;
 
-use cmp::{Ord, Eq};
+use to_str::ToStr;
 
 #[deriving_eq]
 pub struct Rational	{
@@ -42,6 +42,11 @@ pub impl Rational {
 	}
 }
 
+pub impl Rational : ToStr	{
+	pure fn to_str() -> ~str	{
+		return fmt!("%d/%d", self.num, self.denom);
+	}
+}
 
 /*
 impl Rational: Ord 	{
@@ -91,4 +96,9 @@ fn test_mult()	{
 fn test_zero()	{
 	assert mult(zero, &Rational::new(1, 2)) == *zero;
 	assert add(zero, &Rational::new(1, 2)) == Rational::new(1, 2)
+}
+
+#[test]
+fn test_to_str()	{
+	assert Rational::new(1, 4).to_str() == ~"1/4";
 }

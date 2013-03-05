@@ -1,6 +1,6 @@
 extern mod std;
 
-use cmp::{Eq};
+use to_str::ToStr;
 
 use rational::Rational;
 use pitch::Pitch;
@@ -28,6 +28,15 @@ fn rest(d: Rational) -> Music	{
 	Primitive(Rest(d))
 }
 
+impl Value : ToStr	{
+	pure fn to_str() -> ~str	{
+		match self {
+			Note(d, p) => fmt!("%s-%s", p.to_str(), d.to_str()),
+			Rest(d) => fmt!("%s", d.to_str())
+		}
+	}
+}
+
 #[test]
 fn test_note_equality()	{
 	assert Rest(duration(3, 2)) == Rest(duration(3, 2));
@@ -44,4 +53,11 @@ fn test_music_equality()	{
 #[test]
 fn test_duration_equality()	{
 	assert duration(1, 2) == duration(1, 2);
+}
+
+#[test]
+fn test_value_to_str()	{
+	error!("%s", Note(duration(1, 2), pitch(4, 2)).to_str());
+	assert Note(duration(1, 4), pitch(4, 0)).to_str() == ~"(4, 0)-1/4";
+	assert Rest(duration(1, 2)).to_str() == ~"1/2";
 }
