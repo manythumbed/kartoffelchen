@@ -6,6 +6,10 @@
 
 extern mod std;
 
+mod pdf	{
+	mod encoder;
+}
+
 mod rational;
 mod pitch;
 mod primitives;
