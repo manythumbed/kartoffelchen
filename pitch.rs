@@ -24,7 +24,7 @@ pub impl Pitch {
 
 pub impl Pitch : ToStr	{
 	pure fn to_str() -> ~str	{
-		return fmt!("(%d, %d)", self.octave, self.index);
+		return fmt!("(%d,%d)", self.octave, self.index);
 	}
 }
 
@@ -41,5 +41,5 @@ fn test_transpose()	{
 
 #[test]
 fn test_to_str()	{
-	assert Pitch::new(4, 0).to_str() == ~"(4, 0)";
+	assert Pitch::new(4, 0).to_str() == ~"(4,0)";
 }

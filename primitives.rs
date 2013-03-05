@@ -13,6 +13,15 @@ enum Value {
 	Rest(Rational)
 }
 
+impl Value : ToStr	{
+	pure fn to_str() -> ~str	{
+		match self {
+			Note(d, p) => fmt!("%s-%s", p.to_str(), d.to_str()),
+			Rest(d) => fmt!("%s", d.to_str())
+		}
+	}
+}
+
 #[deriving_eq]
 enum Music	{
 	Primitive(Value),
@@ -28,11 +37,12 @@ fn rest(d: Rational) -> Music	{
 	Primitive(Rest(d))
 }
 
-impl Value : ToStr	{
+impl Music : ToStr	{
 	pure fn to_str() -> ~str	{
 		match self {
-			Note(d, p) => fmt!("%s-%s", p.to_str(), d.to_str()),
-			Rest(d) => fmt!("%s", d.to_str())
+			Primitive(v) => v.to_str(),
+			Sequential(a, b) => fmt!("%s, %s", (*a).to_str(), (*b).to_str()),
+			Parallel(a, b) => fmt!("[%s, %s]", (*a).to_str(), (*b).to_str())
 		}
 	}
 }
@@ -57,7 +67,12 @@ fn test_duration_equality()	{
 
 #[test]
 fn test_value_to_str()	{
-	error!("%s", Note(duration(1, 2), pitch(4, 2)).to_str());
-	assert Note(duration(1, 4), pitch(4, 0)).to_str() == ~"(4, 0)-1/4";
+	assert Note(duration(1, 4), pitch(4, 0)).to_str() == ~"(4,0)-1/4";
 	assert Rest(duration(1, 2)).to_str() == ~"1/2";
+}
+
+#[test]
+fn test_music_to_str()	{
+	assert Sequential(@note(duration(1,4), pitch(4, 0)), @note(duration(3, 4), pitch(5, 0))).to_str() == ~"(4,0)-1/4, (5,0)-3/4";
+	assert Parallel(@note(duration(1,4), pitch(4, 0)), @note(duration(3, 4), pitch(5, 0))).to_str() == ~"[(4,0)-1/4, (5,0)-3/4]";
 }
