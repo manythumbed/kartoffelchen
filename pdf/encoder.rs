@@ -1,5 +1,8 @@
 extern mod std;
 
+use io::{file_writer, Create, WriterUtil};
+use result::{chain, Ok};
+use path;
 use str;
 
 fn header() -> ~str {
@@ -11,5 +14,10 @@ fn header() -> ~str {
 
 #[test]
 fn test_output()	{
+	let result = chain(file_writer(&path::Path("test.pdf"), &[Create]),	|w| { 
+		Ok(w.write_str("abc")) 
+	});
+	//file_writer(&path::Path("test.pdf"), &[Create]).chain(|w| w.write_str("abc"); ok("done"));
+	
 	error!("%s", header());
 }
