@@ -5,11 +5,10 @@ use result::{chain, Ok};
 use path;
 use str;
 
-fn header() -> ~str {
-	let newline = ~"\r\n";
-	let headerValues = &[~"%PDF-1.7", copy newline, ~"%\x93\x8c\x8b\x9e", copy newline];
+const newline: &str = "\r\n";
 
-	str::concat(headerValues) 
+fn header() -> ~str {
+	~"%PDF-1.7" + newline + ~"%\x93\x8c\x8b\x9e" + newline 
 }
 
 #[test]
