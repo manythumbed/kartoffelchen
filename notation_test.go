@@ -2,18 +2,14 @@ package kartoffelchen
 
 import (
 	"testing"
+	"github.com/manythumbed/kartoffelchen/rational"
 )
 
 func TestRest(t *testing.T) {
 	r := rest(4, 4)
 
-	l, d := r.Length()
-	if l == false {
-		t.Errorf("A rest has length")
-	}
-
-	if d != duration(4, 4) {
-		t.Errorf("Rest length should be 1, was given %v", d)
+	if r.Duration() != rational.New(4, 4) {
+		t.Errorf("Rest length should be 1, was given %v", r.Duration())
 	}
 
 	if p, _ := r.Pitch(); p != false {
@@ -24,13 +20,8 @@ func TestRest(t *testing.T) {
 func TestNote(t *testing.T) {
 	n := note(2, 4, 4)
 
-	l, d := n.Length()
-	if l == false {
-		t.Errorf("A note has length")
-	}
-
-	if d != duration(4, 4) {
-		t.Errorf("Note length should be 2, was given %v", d)
+	if n.Duration() != rational.New(4, 4) {
+		t.Errorf("Note length should be 2, was given %v", n.Duration())
 	}
 
 }
@@ -45,13 +36,13 @@ func TestEvents(t *testing.T) {
 		t.Errorf("Expected 3 events, received %d", len(e))
 	}
 
-	if e[0].Position != position(0, 1) {
-		t.Errorf("Expected position of 0, received %v", e[0].Position)
+	if e[0].Position != rational.New(0, 1) {
+		t.Errorf("Expected rational.New of 0, received %v", e[0].Position)
 	}
-	if e[1].Position != position(4, 4) {
-		t.Errorf("Expected position of 1, received %v", e[1].Position)
+	if e[1].Position != rational.New(4, 4) {
+		t.Errorf("Expected rational.New of 1, received %v", e[1].Position)
 	}
-	if e[2].Position != position(8, 4) {
-		t.Errorf("Expected position of 2, received %v", e[2].Position)
+	if e[2].Position != rational.New(8, 4) {
+		t.Errorf("Expected rational.New of 2, received %v", e[2].Position)
 	}
 }

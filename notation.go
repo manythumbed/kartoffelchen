@@ -5,77 +5,65 @@ import (
 )
 
 type Pitch int
-type Duration rational.Rational
-type Position rational.Rational
 
 func pitch(value int) Pitch	{
 	return Pitch(value)
 }
 
-func duration(upper, lower int) Duration	{
-	return Duration(rational.New(upper, lower))
-}
-
-func position(upper, lower int) Position {
-	return Position(rational.New(upper, lower))
-}
-
 type Primitive interface {
 	Pitch() (bool, Pitch)
-	Length() (bool, Duration)
+	Duration() rational.Rational
 }
 
 type Event struct {
 	Primitive
-	Position
+	Position rational.Rational
 }
 
 type Rest struct {
-	duration Duration
+	rational.Rational
 }
 
 func rest(upper, lower int) Rest	{
-	return Rest{duration(upper, lower)}
+	return Rest{rational.New(upper, lower)}
 }
 
 func (r Rest) Pitch() (bool, Pitch) {
 	return false, pitch(0)
 }
 
-func (r Rest) Length() (bool, Duration) {
-	return true, r.duration
+func (r Rest) Duration() rational.Rational {
+	return  r.Rational
 }
 
 type Note struct {
 	pitch    Pitch
-	duration Duration
+	rational.Rational
 }
 
 func note(value, upper, lower int)	Note {
-	return Note{pitch(value), duration(upper, lower)}
+	return Note{pitch(value), rational.New(upper, lower)}
 }
 
 func (n Note) Pitch() (bool, Pitch) {
 	return true, n.pitch
 }
 
-func (n Note) Length() (bool, Duration) {
-	return true, n.duration
+func (n Note) Duration() rational.Rational {
+	return n.Rational
 }
 
-func currentPosition(initial Position, duration Duration) Position {
-	return Position(rational.Add(rational.Rational(initial), rational.Rational(duration)))
+func currentPosition(initial, duration rational.Rational) rational.Rational {
+	return rational.Add(initial, duration)
 }
 
 func Events(notes []Primitive) []Event {
 	events := make([]Event, len(notes))
-	p := Position(rational.Zero)
+	p := rational.Zero
 
 	for i, n := range notes {
 		events[i] = Event{n, p}
-		if ok, dur := n.Length(); ok {
-			p = currentPosition(p, dur)
-		}
+		p = currentPosition(p, n.Duration())
 	}
 
 	return events
