@@ -57,9 +57,9 @@ func position(initial, duration rational.Rational) rational.Rational {
 	return rational.Add(initial, duration)
 }
 
-func Events(notes []Primitive) []Event {
+func Events(initialPosition rational.Rational, notes []Primitive) []Event {
 	events := make([]Event, len(notes))
-	p := rational.Zero
+	p := initialPosition
 
 	for i, n := range notes {
 		events[i] = Event{n, p}

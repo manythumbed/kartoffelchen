@@ -27,11 +27,11 @@ func TestNote(t *testing.T) {
 }
 
 func TestEvents(t *testing.T) {
-	if len(Events([]Primitive{})) != 0 {
+	if len(Events(rational.Zero, []Primitive{})) != 0 {
 		t.Errorf("An empty slice of primitives should produce an empty slice of events")
 	}
 
-	e := Events([]Primitive{rest(4, 4), note(2, 4, 4), rest(4, 4)})
+	e := Events(rational.Zero, []Primitive{rest(4, 4), note(2, 4, 4), rest(4, 4)})
 	if len(e) != 3 {
 		t.Errorf("Expected 3 events, received %d", len(e))
 	}
