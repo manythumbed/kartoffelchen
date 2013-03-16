@@ -53,6 +53,41 @@ func (n Note) Duration() rational.Rational {
 	return n.duration
 }
 
+type Line struct {
+	primitives []Primitive
+}
+
+func (l Line) Pitch() (bool, Pitch) {
+	return false, pitch(0)
+}
+
+func (l Line) Duration() rational.Rational {
+	d := rational.Zero
+	for _, p := range l.primitives {
+		d = rational.Add(d, p.Duration())
+	}
+
+	return d
+}
+
+type Stack struct {
+	primitives []Primitive
+}
+
+func (l Stack) Pitch() (bool, Pitch) {
+	return false, pitch(0)
+}
+
+func (l Stack) Duration() rational.Rational {
+	d := rational.Zero
+	for _, p := range l.primitives {
+		// TO DO need to implement comparison on Rational and / or max
+		d = p.Duration()
+	}
+
+	return d
+}
+
 func position(initial, duration rational.Rational) rational.Rational {
 	return rational.Add(initial, duration)
 }
