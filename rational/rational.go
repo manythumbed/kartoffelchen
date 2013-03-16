@@ -1,24 +1,29 @@
-package kartoffelchen
+package rational
 
 import (
 	"math"
 )
 
-type rational struct {
+type Rational struct {
 	num, denom int
 }
 
-var zero = rational{0, 1}
+var Zero = Rational{0, 1}
 
-func add(a, b rational) rational {
-	l := lcm(a.denom, b.denom)
-	c, d := reduce((a.num*(l/a.denom))+(b.num*(l/b.denom)), l)
-	return rational{c, d}
+func New(num, denom int) Rational {
+	a, b := reduce(num, denom)
+	return Rational{a, b}
 }
 
-func scale(a, b rational) rational {
+func Add(a, b Rational) Rational {
+	l := lcm(a.denom, b.denom)
+	c, d := reduce((a.num*(l/a.denom))+(b.num*(l/b.denom)), l)
+	return Rational{c, d}
+}
+
+func Scale(a, b Rational) Rational {
 	c, d := reduce(a.num*b.num, a.denom*b.denom)
-	return rational{c, d}
+	return Rational{c, d}
 }
 
 func gcd(a, b int) int {
@@ -41,17 +46,17 @@ func lcm(a, b int) int {
 	return abs(a*b) / gcd(a, b)
 }
 
-type rationals []rational
+type Rationals []Rational
 
-func (r rationals) Len() int {
+func (r Rationals) Len() int {
 	return len(r)
 }
 
-func (r rationals) Swap(i, j int) {
+func (r Rationals) Swap(i, j int) {
 	r[i], r[j] = r[j], r[i]
 }
 
-func (r rationals) Less(i, j int) bool {
+func (r Rationals) Less(i, j int) bool {
 	l := lcm(r[i].denom, r[j].denom)
 	return (r[i].num * (l / r[i].denom)) < (r[j].num * (l / r[j].denom))
 }

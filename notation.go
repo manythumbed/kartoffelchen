@@ -1,21 +1,23 @@
 package kartoffelchen
 
+import (
+	"github.com/manythumbed/kartoffelchen/rational"
+)
+
 type Pitch int
-type Duration rational
-type Position rational
+type Duration rational.Rational
+type Position rational.Rational
 
 func pitch(value int) Pitch	{
 	return Pitch(value)
 }
 
 func duration(upper, lower int) Duration	{
-	a, b := reduce(upper, lower)
-	return Duration{a, b}
+	return Duration(rational.New(upper, lower))
 }
 
 func position(upper, lower int) Position {
-	a, b := reduce(upper, lower)
-	return Position{a, b}
+	return Position(rational.New(upper, lower))
 }
 
 type Primitive interface {
@@ -62,12 +64,12 @@ func (n Note) Length() (bool, Duration) {
 }
 
 func currentPosition(initial Position, duration Duration) Position {
-	return Position(add(rational(initial), rational(duration)))
+	return Position(rational.Add(rational.Rational(initial), rational.Rational(duration)))
 }
 
 func Events(notes []Primitive) []Event {
 	events := make([]Event, len(notes))
-	p := Position(zero)
+	p := Position(rational.Zero)
 
 	for i, n := range notes {
 		events[i] = Event{n, p}

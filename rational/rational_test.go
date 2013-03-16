@@ -1,4 +1,4 @@
-package kartoffelchen
+package rational
 
 import (
 	"sort"
@@ -6,39 +6,39 @@ import (
 )
 
 func TestAddition(t *testing.T) {
-	a := [][]rational{
-		[]rational{zero, {1, 1}, {1, 1}},
-		[]rational{{1, 1}, zero, {1, 1}},
-		[]rational{{1, 1}, {1, 1}, {2, 1}},
-		[]rational{{1, 2}, {1, 2}, {1, 1}},
-		[]rational{{1, 2}, {1, 3}, {5, 6}},
-		[]rational{{2, 21}, {1, 6}, {11, 42}},
+	a := [][]Rational{
+		[]Rational{Zero, {1, 1}, {1, 1}},
+		[]Rational{{1, 1}, Zero, {1, 1}},
+		[]Rational{{1, 1}, {1, 1}, {2, 1}},
+		[]Rational{{1, 2}, {1, 2}, {1, 1}},
+		[]Rational{{1, 2}, {1, 3}, {5, 6}},
+		[]Rational{{2, 21}, {1, 6}, {11, 42}},
 	}
 
 	for _, data := range a {
-		if x := add(data[0], data[1]); x != data[2] {
+		if x := Add(data[0], data[1]); x != data[2] {
 			t.Errorf("When adding %d and %d expected %d and received %d", data[0], data[1], data[2], x)
 		}
 	}
 }
 
 func TestScale(t *testing.T) {
-	a := [][]rational{
-		[]rational{{1, 1}, {1, 1}, {1, 1}},
-		[]rational{{1, 2}, {1, 2}, {1, 4}},
-		[]rational{{1, 2}, {7, 3}, {7, 6}},
-		[]rational{{2, 21}, {1, 6}, {1, 63}},
+	a := [][]Rational{
+		[]Rational{{1, 1}, {1, 1}, {1, 1}},
+		[]Rational{{1, 2}, {1, 2}, {1, 4}},
+		[]Rational{{1, 2}, {7, 3}, {7, 6}},
+		[]Rational{{2, 21}, {1, 6}, {1, 63}},
 	}
 
 	for _, data := range a {
-		if x := scale(data[0], data[1]); x != data[2] {
+		if x := Scale(data[0], data[1]); x != data[2] {
 			t.Errorf("When scaling %d by %d expected %d and received %d", data[0], data[1], data[2], x)
 		}
 	}
 }
 
 func TestSort(t *testing.T) {
-	s := rationals{
+	s := Rationals{
 		{1, 1},
 		{1, 2},
 		{1, 3},
@@ -48,7 +48,7 @@ func TestSort(t *testing.T) {
 		{2, 3},
 	}
 
-	s1 := rationals{
+	s1 := Rationals{
 		{1, 4},
 		{1, 3},
 		{1, 2},
