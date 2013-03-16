@@ -6,7 +6,7 @@ import (
 
 type Pitch int
 
-func pitch(value int) Pitch	{
+func pitch(value int) Pitch {
 	return Pitch(value)
 }
 
@@ -21,10 +21,10 @@ type Event struct {
 }
 
 type Rest struct {
-	rational.Rational
+	duration rational.Rational
 }
 
-func rest(upper, lower int) Rest	{
+func rest(upper, lower int) Rest {
 	return Rest{rational.New(upper, lower)}
 }
 
@@ -33,15 +33,15 @@ func (r Rest) Pitch() (bool, Pitch) {
 }
 
 func (r Rest) Duration() rational.Rational {
-	return  r.Rational
+	return r.duration
 }
 
 type Note struct {
 	pitch    Pitch
-	rational.Rational
+	duration rational.Rational
 }
 
-func note(value, upper, lower int)	Note {
+func note(value, upper, lower int) Note {
 	return Note{pitch(value), rational.New(upper, lower)}
 }
 
@@ -50,10 +50,10 @@ func (n Note) Pitch() (bool, Pitch) {
 }
 
 func (n Note) Duration() rational.Rational {
-	return n.Rational
+	return n.duration
 }
 
-func currentPosition(initial, duration rational.Rational) rational.Rational {
+func position(initial, duration rational.Rational) rational.Rational {
 	return rational.Add(initial, duration)
 }
 
@@ -63,7 +63,7 @@ func Events(notes []Primitive) []Event {
 
 	for i, n := range notes {
 		events[i] = Event{n, p}
-		p = currentPosition(p, n.Duration())
+		p = position(p, n.Duration())
 	}
 
 	return events

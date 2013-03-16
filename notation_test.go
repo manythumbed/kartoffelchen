@@ -1,8 +1,8 @@
 package kartoffelchen
 
 import (
-	"testing"
 	"github.com/manythumbed/kartoffelchen/rational"
+	"testing"
 )
 
 func TestRest(t *testing.T) {
