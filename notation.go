@@ -1,8 +1,22 @@
 package kartoffelchen
 
 type Pitch int
-type Duration int
-type Position int
+type Duration rational
+type Position rational
+
+func pitch(value int) Pitch	{
+	return Pitch(value)
+}
+
+func duration(upper, lower int) Duration	{
+	a, b := reduce(upper, lower)
+	return Duration{a, b}
+}
+
+func position(upper, lower int) Position {
+	a, b := reduce(upper, lower)
+	return Position{a, b}
+}
 
 type Primitive interface {
 	Pitch() (bool, Pitch)
@@ -18,8 +32,12 @@ type Rest struct {
 	duration Duration
 }
 
+func rest(upper, lower int) Rest	{
+	return Rest{duration(upper, lower)}
+}
+
 func (r Rest) Pitch() (bool, Pitch) {
-	return false, Pitch(0)
+	return false, pitch(0)
 }
 
 func (r Rest) Length() (bool, Duration) {
@@ -31,6 +49,10 @@ type Note struct {
 	duration Duration
 }
 
+func note(value, upper, lower int)	Note {
+	return Note{pitch(value), duration(upper, lower)}
+}
+
 func (n Note) Pitch() (bool, Pitch) {
 	return true, n.pitch
 }
@@ -39,18 +61,18 @@ func (n Note) Length() (bool, Duration) {
 	return true, n.duration
 }
 
-func position(initial Position, duration Duration) Position {
-	return Position(int(initial) + int(duration))
+func currentPosition(initial Position, duration Duration) Position {
+	return Position(add(rational(initial), rational(duration)))
 }
 
 func Events(notes []Primitive) []Event {
 	events := make([]Event, len(notes))
-	p := Position(0)
+	p := Position(zero)
 
 	for i, n := range notes {
 		events[i] = Event{n, p}
 		if ok, dur := n.Length(); ok {
-			p = position(p, dur)
+			p = currentPosition(p, dur)
 		}
 	}
 
