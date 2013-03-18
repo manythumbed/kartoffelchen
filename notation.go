@@ -13,6 +13,7 @@ func pitch(value int) Pitch {
 type Primitive interface {
 	Pitch() (bool, Pitch)
 	Duration() rational.Rational
+	Events(rational.Rational) []Event
 }
 
 type Event struct {
@@ -36,6 +37,10 @@ func (r Rest) Duration() rational.Rational {
 	return r.duration
 }
 
+func (r Rest) Events(start rational.Rational) []Event {
+	return []Event{Event{r, start}}
+}
+
 type Note struct {
 	pitch    Pitch
 	duration rational.Rational
@@ -53,6 +58,10 @@ func (n Note) Duration() rational.Rational {
 	return n.duration
 }
 
+func (n Note) Events(start rational.Rational) []Event {
+	return []Event{Event{n, start}}
+}
+
 type Line struct {
 	primitives []Primitive
 }
@@ -68,6 +77,16 @@ func (l Line) Duration() rational.Rational {
 	}
 
 	return d
+}
+
+func (l Line) Events(start rational.Rational) []Event {
+	e := []Event{}
+	for _, p := range l.primitives {
+		e = append(e, p.Events(start)...)
+		start = rational.Add(start, p.Duration())
+	}
+
+	return e
 }
 
 type Stack struct {
@@ -92,7 +111,7 @@ func position(initial, duration rational.Rational) rational.Rational {
 	return rational.Add(initial, duration)
 }
 
-func Events(initialPosition rational.Rational, notes []Primitive) []Event {
+func events(initialPosition rational.Rational, notes []Primitive) []Event {
 	events := make([]Event, len(notes))
 	p := initialPosition
 
