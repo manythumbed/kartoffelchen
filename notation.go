@@ -1,6 +1,7 @@
 package kartoffelchen
 
 import (
+	"fmt"
 	"github.com/manythumbed/kartoffelchen/rational"
 )
 
@@ -21,6 +22,10 @@ type Event struct {
 	Position rational.Rational
 }
 
+func (e Event) String() string {
+	return fmt.Sprintf("%s-%s", e.Primitive, e.Position)
+}
+
 type Rest struct {
 	duration rational.Rational
 }
@@ -39,6 +44,10 @@ func (r Rest) Duration() rational.Rational {
 
 func (r Rest) Events(start rational.Rational) []Event {
 	return []Event{Event{r, start}}
+}
+
+func (r Rest) String() string {
+	return fmt.Sprintf("r(%s)", r.duration)
 }
 
 type Note struct {

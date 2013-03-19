@@ -1,6 +1,7 @@
 package rational
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -24,6 +25,10 @@ func Add(a, b Rational) Rational {
 func Scale(a, b Rational) Rational {
 	c, d := reduce(a.num*b.num, a.denom*b.denom)
 	return Rational{c, d}
+}
+
+func (r Rational) String() string {
+	return fmt.Sprintf("%d/%d", r.num, r.denom)
 }
 
 func gcd(a, b int) int {

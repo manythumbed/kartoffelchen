@@ -55,5 +55,4 @@ func TestLine(t *testing.T) {
 	if l := len(c.Events(rational.Zero)); l != 6 {
 		t.Errorf("Expected 6 events received %v", l)
 	}
-	t.Errorf("%v", c.Events(rational.Zero))
 }
