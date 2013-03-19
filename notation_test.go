@@ -52,7 +52,21 @@ func TestLine(t *testing.T) {
 	b := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
 	c := Line{[]Primitive{a, b}}
 
-	if l := len(c.Events(rational.Zero)); l != 6 {
-		t.Errorf("Expected 6 events received %v", l)
+	e := c.Events(rational.Zero)
+	if l := len(e); l != 6 {
+		t.Errorf("Expected 6 events, received %v", l)
+	}
+
+	checkRational(e[0].Position, rational.Zero, t)
+	checkRational(e[1].Position, rational.New(1, 4), t)
+	checkRational(e[2].Position, rational.New(3, 4), t)
+	checkRational(e[3].Position, rational.New(1, 1), t)
+	checkRational(e[4].Position, rational.New(5, 4), t)
+	checkRational(e[5].Position, rational.New(7, 4), t)
+}
+
+func checkRational(expected, received rational.Rational, t *testing.T) {
+	if expected != received {
+		t.Errorf("Expected %s, received %s", expected, received)
 	}
 }
