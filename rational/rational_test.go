@@ -64,6 +64,20 @@ func TestSort(t *testing.T) {
 			t.Errorf("Value of sorted array, %v, is not equal to expected value, %v", s[i], s1[i])
 		}
 	}
+
+	s2 := Sort([]*Rational{{1, 2}, {3, 2}, {1, 4}, {1, 8}})
+	if *s2[0] != New(1, 8)	{
+		t.Errorf("Expected 1/8 recieved %v", s2[0])
+	}
+	if *s2[1] != New(1, 4)	{
+		t.Errorf("Expected 1/4 recieved %v", s2[1])
+	}
+	if *s2[2] != New(1, 2)	{
+		t.Errorf("Expected 1/2 recieved %v", s2[2])
+	}
+	if *s2[3] != New(3, 2)	{
+		t.Errorf("Expected 3/2 recieved %v", s2[3])
+	}
 }
 
 func TestGcd(t *testing.T) {
