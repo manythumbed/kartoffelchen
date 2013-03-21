@@ -3,6 +3,7 @@ package rational
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 type Rational struct {
@@ -51,17 +52,22 @@ func lcm(a, b int) int {
 	return abs(a*b) / gcd(a, b)
 }
 
-type Rationals []Rational
+type rationals []*Rational
 
-func (r Rationals) Len() int {
+func (r rationals) Len() int {
 	return len(r)
 }
 
-func (r Rationals) Swap(i, j int) {
+func (r rationals) Swap(i, j int) {
 	r[i], r[j] = r[j], r[i]
 }
 
-func (r Rationals) Less(i, j int) bool {
+func (r rationals) Less(i, j int) bool {
 	l := lcm(r[i].denom, r[j].denom)
 	return (r[i].num * (l / r[i].denom)) < (r[j].num * (l / r[j].denom))
+}
+
+func Sort(r []*Rational) []*Rational	{
+	sort.Sort(rationals(r))
+	return r
 }

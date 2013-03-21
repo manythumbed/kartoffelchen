@@ -38,7 +38,7 @@ func TestScale(t *testing.T) {
 }
 
 func TestSort(t *testing.T) {
-	s := Rationals{
+	s := rationals{
 		{1, 1},
 		{1, 2},
 		{1, 3},
@@ -48,7 +48,7 @@ func TestSort(t *testing.T) {
 		{2, 3},
 	}
 
-	s1 := Rationals{
+	s1 := rationals{
 		{1, 4},
 		{1, 3},
 		{1, 2},
@@ -60,7 +60,7 @@ func TestSort(t *testing.T) {
 
 	sort.Sort(s)
 	for i := range s1 {
-		if s1[i] != s[i] {
+		if *s1[i] != *s[i] {
 			t.Errorf("Value of sorted array, %v, is not equal to expected value, %v", s[i], s1[i])
 		}
 	}
