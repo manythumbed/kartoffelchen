@@ -36,19 +36,24 @@ func before(a, b rational.Rational) bool {
 }
 
 func Bars(signature TimeSignature, initialPosition rational.Rational, element Primitive) []Bar {
+	bars := []Bar{}
 	eventList := events(element.Events(initialPosition))
 	sort.Sort(eventList)
 	limit := rational.Add(initialPosition, signature.asRational())
+	bar := Bar{1, []Event{}}
 	for _, e := range eventList {
 		if !before(e.Position, limit) {
 			limit = rational.Add(limit, signature.asRational())
+			bars = append(bars, bar)
+			bar = Bar{bar.Number + 1, []Event{}}
 		}
 
 		fmt.Printf("BAR %v\n", limit)
 		fmt.Printf("%v\t%v\n", e.Position, e.Primitive)
 	}
+	bars = append(bars, bar)
 
-	return []Bar{}
+	return bars
 }
 
 func output() pdf.Document {
