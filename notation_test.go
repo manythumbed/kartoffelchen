@@ -26,27 +26,6 @@ func TestNote(t *testing.T) {
 
 }
 
-func TestEvents(t *testing.T) {
-	if len(events(rational.Zero, []Primitive{})) != 0 {
-		t.Errorf("An empty slice of primitives should produce an empty slice of events")
-	}
-
-	e := events(rational.Zero, []Primitive{rest(4, 4), note(4, 2, 4, 4), rest(4, 4)})
-	if len(e) != 3 {
-		t.Errorf("Expected 3 events, received %d", len(e))
-	}
-
-	if e[0].Position != rational.New(0, 1) {
-		t.Errorf("Expected rational.New of 0, received %v", e[0].Position)
-	}
-	if e[1].Position != rational.New(4, 4) {
-		t.Errorf("Expected rational.New of 1, received %v", e[1].Position)
-	}
-	if e[2].Position != rational.New(8, 4) {
-		t.Errorf("Expected rational.New of 2, received %v", e[2].Position)
-	}
-}
-
 func TestLine(t *testing.T) {
 	a := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
 	b := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}

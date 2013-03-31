@@ -67,3 +67,8 @@ func Greater(a, b Rational) bool {
 	l := lcm(a.denom, b.denom)
 	return (a.num * (l / a.denom)) > (b.num * (l / b.denom))
 }
+
+func Less(a, b Rational) bool {
+	l := lcm(a.denom, b.denom)
+	return (a.num * (l / a.denom)) < (b.num * (l / b.denom))
+}

@@ -8,6 +8,8 @@ import (
 
 type MetaData []string
 
+var Untagged = MetaData{}
+
 // Primitive is the interface that provides the basic methods used by musical elements.
 //
 // Pitch returns true if the element is pitched with the associated pitch. If the element is
@@ -120,6 +122,10 @@ func (l Line) Tags() MetaData {
 	return l.tags
 }
 
+func NewLine(m MetaData, primitives ...Primitive) Line {
+	return Line{primitives, m}
+}
+
 type Stack struct {
 	primitives []Primitive
 	tags       MetaData
@@ -153,18 +159,10 @@ func (s Stack) Tags() MetaData {
 	return s.tags
 }
 
-func position(initial, duration rational.Rational) rational.Rational {
-	return rational.Add(initial, duration)
+func NewStack(m MetaData, primitives ...Primitive) Stack {
+	return Stack{primitives, m}
 }
 
-func events(initialPosition rational.Rational, notes []Primitive) []Event {
-	events := make([]Event, len(notes))
-	p := initialPosition
-
-	for i, n := range notes {
-		events[i] = Event{n, p}
-		p = position(p, n.Duration())
-	}
-
-	return events
+func position(initial, duration rational.Rational) rational.Rational {
+	return rational.Add(initial, duration)
 }
