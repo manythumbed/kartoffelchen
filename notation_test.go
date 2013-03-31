@@ -18,7 +18,7 @@ func TestRest(t *testing.T) {
 }
 
 func TestNote(t *testing.T) {
-	n := note(2, 4, 4)
+	n := note(4, 2, 4, 4)
 
 	if n.Duration() != rational.New(4, 4) {
 		t.Errorf("Note length should be 2, was given %v", n.Duration())
@@ -31,7 +31,7 @@ func TestEvents(t *testing.T) {
 		t.Errorf("An empty slice of primitives should produce an empty slice of events")
 	}
 
-	e := events(rational.Zero, []Primitive{rest(4, 4), note(2, 4, 4), rest(4, 4)})
+	e := events(rational.Zero, []Primitive{rest(4, 4), note(4, 2, 4, 4), rest(4, 4)})
 	if len(e) != 3 {
 		t.Errorf("Expected 3 events, received %d", len(e))
 	}

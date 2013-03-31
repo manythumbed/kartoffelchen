@@ -5,18 +5,25 @@ import (
 	"github.com/manythumbed/kartoffelchen/rational"
 )
 
-type Pitch int
-
-func pitch(value int) Pitch {
-	return Pitch(value)
+func pitch(octave, index int) Pitch {
+	return NewPitch(octave, index)
 }
 
+// Primitive is the interface that provides the basic methods used by musical elements.
+//
+// Pitch returns true if the element is pitched with the associated pitch. If the element is
+// unpitched it will return false.
+//
+// Duration is the duration of the element. An element with no duration should return rational.Zero.
+//
+// Events are the musical events that make up the element.
 type Primitive interface {
 	Pitch() (bool, Pitch)
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
 }
 
+// Event represents a musical element with an associated position in time.
 type Event struct {
 	Primitive
 	Position rational.Rational
@@ -35,7 +42,7 @@ func rest(upper, lower int) Rest {
 }
 
 func (r Rest) Pitch() (bool, Pitch) {
-	return false, pitch(0)
+	return false, Unpitched
 }
 
 func (r Rest) Duration() rational.Rational {
@@ -55,8 +62,8 @@ type Note struct {
 	duration rational.Rational
 }
 
-func note(value, upper, lower int) Note {
-	return Note{pitch(value), rational.New(upper, lower)}
+func note(octave, index, upper, lower int) Note {
+	return Note{pitch(octave, index), rational.New(upper, lower)}
 }
 
 func (n Note) Pitch() (bool, Pitch) {
@@ -76,7 +83,7 @@ type Line struct {
 }
 
 func (l Line) Pitch() (bool, Pitch) {
-	return false, pitch(0)
+	return false, Unpitched
 }
 
 func (l Line) Duration() rational.Rational {
@@ -103,7 +110,7 @@ type Stack struct {
 }
 
 func (l Stack) Pitch() (bool, Pitch) {
-	return false, pitch(0)
+	return false, Unpitched
 }
 
 func (l Stack) Duration() rational.Rational {
