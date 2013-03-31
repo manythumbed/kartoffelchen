@@ -48,9 +48,9 @@ func TestEvents(t *testing.T) {
 }
 
 func TestLine(t *testing.T) {
-	a := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
-	b := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
-	c := Line{[]Primitive{a, b}}
+	a := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
+	b := Line{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
+	c := Line{[]Primitive{a, b}, MetaData{}}
 
 	e := c.Events(rational.Zero)
 	if l := len(e); l != 6 {
@@ -66,9 +66,9 @@ func TestLine(t *testing.T) {
 }
 
 func TestStack(t *testing.T) {
-	a := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
-	b := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
-	c := Stack{[]Primitive{a, b}}
+	a := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
+	b := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
+	c := Stack{[]Primitive{a, b}, MetaData{}}
 
 	e := c.Events(rational.Zero)
 	if l := len(e); l != 6 {

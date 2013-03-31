@@ -6,6 +6,8 @@ import (
 	"github.com/manythumbed/kartoffelchen/rational"
 )
 
+type MetaData []string
+
 // Primitive is the interface that provides the basic methods used by musical elements.
 //
 // Pitch returns true if the element is pitched with the associated pitch. If the element is
@@ -18,6 +20,7 @@ type Primitive interface {
 	Pitch() (bool, pitch.Pitch)
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
+	Tags() MetaData
 }
 
 // Event represents a musical element with an associated position in time.
@@ -32,10 +35,11 @@ func (e Event) String() string {
 
 type Rest struct {
 	duration rational.Rational
+	tags     MetaData
 }
 
 func rest(upper, lower int) Rest {
-	return Rest{rational.New(upper, lower)}
+	return Rest{rational.New(upper, lower), MetaData{}}
 }
 
 func (r Rest) Pitch() (bool, pitch.Pitch) {
@@ -44,6 +48,10 @@ func (r Rest) Pitch() (bool, pitch.Pitch) {
 
 func (r Rest) Duration() rational.Rational {
 	return r.duration
+}
+
+func (r Rest) Tags() MetaData {
+	return r.tags
 }
 
 func (r Rest) Events(start rational.Rational) []Event {
@@ -57,10 +65,11 @@ func (r Rest) String() string {
 type Note struct {
 	pitch    pitch.Pitch
 	duration rational.Rational
+	tags     MetaData
 }
 
 func note(octave, index, upper, lower int) Note {
-	return Note{pitch.New(octave, index), rational.New(upper, lower)}
+	return Note{pitch.New(octave, index), rational.New(upper, lower), MetaData{}}
 }
 
 func (n Note) Pitch() (bool, pitch.Pitch) {
@@ -75,8 +84,13 @@ func (n Note) Events(start rational.Rational) []Event {
 	return []Event{Event{n, start}}
 }
 
+func (n Note) Tags() MetaData {
+	return n.tags
+}
+
 type Line struct {
 	primitives []Primitive
+	tags       MetaData
 }
 
 func (l Line) Pitch() (bool, pitch.Pitch) {
@@ -102,8 +116,13 @@ func (l Line) Events(start rational.Rational) []Event {
 	return e
 }
 
+func (l Line) Tags() MetaData {
+	return l.tags
+}
+
 type Stack struct {
 	primitives []Primitive
+	tags       MetaData
 }
 
 func (l Stack) Pitch() (bool, pitch.Pitch) {
@@ -128,6 +147,10 @@ func (s Stack) Events(start rational.Rational) []Event {
 	}
 
 	return e
+}
+
+func (s Stack) Tags() MetaData {
+	return s.tags
 }
 
 func position(initial, duration rational.Rational) rational.Rational {
