@@ -1,7 +1,6 @@
 package rational
 
 import (
-	"sort"
 	"testing"
 )
 
@@ -37,49 +36,6 @@ func TestScale(t *testing.T) {
 	}
 }
 
-func TestSort(t *testing.T) {
-	s := rationals{
-		{1, 1},
-		{1, 2},
-		{1, 3},
-		{3, 2},
-		{4, 2},
-		{1, 4},
-		{2, 3},
-	}
-
-	s1 := rationals{
-		{1, 4},
-		{1, 3},
-		{1, 2},
-		{2, 3},
-		{1, 1},
-		{3, 2},
-		{4, 2},
-	}
-
-	sort.Sort(s)
-	for i := range s1 {
-		if *s1[i] != *s[i] {
-			t.Errorf("Value of sorted array, %v, is not equal to expected value, %v", s[i], s1[i])
-		}
-	}
-
-	s2 := Sort([]*Rational{{1, 2}, {3, 2}, {1, 4}, {1, 8}})
-	if *s2[0] != New(1, 8)	{
-		t.Errorf("Expected 1/8 recieved %v", s2[0])
-	}
-	if *s2[1] != New(1, 4)	{
-		t.Errorf("Expected 1/4 recieved %v", s2[1])
-	}
-	if *s2[2] != New(1, 2)	{
-		t.Errorf("Expected 1/2 recieved %v", s2[2])
-	}
-	if *s2[3] != New(3, 2)	{
-		t.Errorf("Expected 3/2 recieved %v", s2[3])
-	}
-}
-
 func TestGcd(t *testing.T) {
 	a := [][]int{
 		[]int{54, 24, 6},
@@ -111,5 +67,17 @@ func TestReduce(t *testing.T) {
 func TestLcm(t *testing.T) {
 	if lcm(21, 6) != 42 {
 		t.Errorf("For %d and %d expected lcm of %d, received %d", 21, 6, 42, lcm(21, 6))
+	}
+}
+
+func TestMax(t *testing.T) {
+	if Max([]Rational{}) != Zero {
+		t.Errorf("Max of an empty slice of rationals should be zero")
+	}
+	if Max([]Rational{New(1, 2)}) != New(1, 2) {
+		t.Errorf("Max of a single non-zero element slice of rationals should be element")
+	}
+	if Max([]Rational{New(1, 2), New(2, 3), New(1, 53)}) != New(2, 3) {
+		t.Errorf("Max of should be 2/3")
 	}
 }
