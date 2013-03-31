@@ -65,7 +65,25 @@ func TestLine(t *testing.T) {
 	checkRational(e[5].Position, rational.New(7, 4), t)
 }
 
-func checkRational(expected, received rational.Rational, t *testing.T) {
+func TestStack(t *testing.T) {
+	a := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
+	b := Stack{[]Primitive{rest(1, 4), rest(1, 2), rest(1, 4)}}
+	c := Stack{[]Primitive{a, b}}
+
+	e := c.Events(rational.Zero)
+	if l := len(e); l != 6 {
+		t.Errorf("Expected 6 events, received %v", l)
+	}
+
+	checkRational(e[0].Position, rational.Zero, t)
+	checkRational(e[1].Position, rational.Zero, t)
+	checkRational(e[2].Position, rational.Zero, t)
+	checkRational(e[3].Position, rational.Zero, t)
+	checkRational(e[4].Position, rational.Zero, t)
+	checkRational(e[5].Position, rational.Zero, t)
+}
+
+func checkRational(received, expected rational.Rational, t *testing.T) {
 	if expected != received {
 		t.Errorf("Expected %s, received %s", expected, received)
 	}

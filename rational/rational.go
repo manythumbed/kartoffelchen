@@ -55,7 +55,7 @@ func Max(rationals []Rational) Rational {
 	max := Zero
 
 	for _, r := range rationals {
-		if greater(r, max) {
+		if Greater(r, max) {
 			max = r
 		}
 	}
@@ -63,7 +63,7 @@ func Max(rationals []Rational) Rational {
 	return max
 }
 
-func greater(a, b Rational) bool {
+func Greater(a, b Rational) bool {
 	l := lcm(a.denom, b.denom)
 	return (a.num * (l / a.denom)) > (b.num * (l / b.denom))
 }

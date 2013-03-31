@@ -109,11 +109,21 @@ func (l Stack) Pitch() (bool, Pitch) {
 func (l Stack) Duration() rational.Rational {
 	d := rational.Zero
 	for _, p := range l.primitives {
-		// TO DO need to implement comparison on Rational and / or max
-		d = p.Duration()
+		if rational.Greater(p.Duration(), d) {
+			d = p.Duration()
+		}
 	}
 
 	return d
+}
+
+func (s Stack) Events(start rational.Rational) []Event {
+	e := []Event{}
+	for _, p := range s.primitives {
+		e = append(e, p.Events(start)...)
+	}
+
+	return e
 }
 
 func position(initial, duration rational.Rational) rational.Rational {
