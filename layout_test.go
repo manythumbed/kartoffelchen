@@ -18,6 +18,9 @@ func TestBars(t *testing.T) {
 
 func checkBar(received, expected Bar, t *testing.T) {
 	if expected.Number != received.Number {
-		t.Errorf("Expected bar to be %v and received %v", expected, received)
+		t.Errorf("Expected bar number to be %v and received %v", expected, received)
+	}
+	if len(expected.Events) != len(received.Events) {
+		t.Errorf("Expected %d events and received %d events", len(expected.Events), len(received.Events))
 	}
 }

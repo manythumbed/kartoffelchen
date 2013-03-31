@@ -2,7 +2,6 @@ package kartoffelchen
 
 import (
 	"bitbucket.org/zombiezen/gopdf/pdf"
-	"fmt"
 	"github.com/manythumbed/kartoffelchen/rational"
 	"sort"
 )
@@ -48,8 +47,7 @@ func Bars(signature TimeSignature, initialPosition rational.Rational, element Pr
 			bar = Bar{bar.Number + 1, []Event{}}
 		}
 
-		fmt.Printf("BAR %v\n", limit)
-		fmt.Printf("%v\t%v\n", e.Position, e.Primitive)
+		bar.Events = append(bar.Events, e)
 	}
 	bars = append(bars, bar)
 
