@@ -2,12 +2,9 @@ package kartoffelchen
 
 import (
 	"fmt"
+	"github.com/manythumbed/kartoffelchen/pitch"
 	"github.com/manythumbed/kartoffelchen/rational"
 )
-
-func pitch(octave, index int) Pitch {
-	return NewPitch(octave, index)
-}
 
 // Primitive is the interface that provides the basic methods used by musical elements.
 //
@@ -18,7 +15,7 @@ func pitch(octave, index int) Pitch {
 //
 // Events are the musical events that make up the element.
 type Primitive interface {
-	Pitch() (bool, Pitch)
+	Pitch() (bool, pitch.Pitch)
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
 }
@@ -41,8 +38,8 @@ func rest(upper, lower int) Rest {
 	return Rest{rational.New(upper, lower)}
 }
 
-func (r Rest) Pitch() (bool, Pitch) {
-	return false, Unpitched
+func (r Rest) Pitch() (bool, pitch.Pitch) {
+	return false, pitch.Unpitched
 }
 
 func (r Rest) Duration() rational.Rational {
@@ -58,15 +55,15 @@ func (r Rest) String() string {
 }
 
 type Note struct {
-	pitch    Pitch
+	pitch    pitch.Pitch
 	duration rational.Rational
 }
 
 func note(octave, index, upper, lower int) Note {
-	return Note{pitch(octave, index), rational.New(upper, lower)}
+	return Note{pitch.New(octave, index), rational.New(upper, lower)}
 }
 
-func (n Note) Pitch() (bool, Pitch) {
+func (n Note) Pitch() (bool, pitch.Pitch) {
 	return true, n.pitch
 }
 
@@ -82,8 +79,8 @@ type Line struct {
 	primitives []Primitive
 }
 
-func (l Line) Pitch() (bool, Pitch) {
-	return false, Unpitched
+func (l Line) Pitch() (bool, pitch.Pitch) {
+	return false, pitch.Unpitched
 }
 
 func (l Line) Duration() rational.Rational {
@@ -109,8 +106,8 @@ type Stack struct {
 	primitives []Primitive
 }
 
-func (l Stack) Pitch() (bool, Pitch) {
-	return false, Unpitched
+func (l Stack) Pitch() (bool, pitch.Pitch) {
+	return false, pitch.Unpitched
 }
 
 func (l Stack) Duration() rational.Rational {

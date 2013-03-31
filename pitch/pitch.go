@@ -1,4 +1,4 @@
-package kartoffelchen
+package pitch
 
 import (
 	"math"
@@ -13,7 +13,7 @@ type Pitch struct {
 	index  NoteIndex
 }
 
-func NewPitch(octave, index int) Pitch {
+func New(octave, index int) Pitch {
 	return Pitch{Octave(octave), NoteIndex(abs(index))}
 }
 
