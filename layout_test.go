@@ -12,8 +12,19 @@ func TestBars(t *testing.T) {
 	if len(bars) != 2 {
 		t.Errorf("Expected %d bars received %d", 2, len(bars))
 	}
-	checkBar(bars[0], Bar{1, []Event{}}, t)
-	checkBar(bars[1], Bar{2, []Event{}}, t)
+
+	bar1 := Bar{1, []Event{
+		Event{voice.primitives[0], rational.Zero},
+		Event{voice.primitives[1], rational.New(1, 4)},
+	}}
+
+	bar2 := Bar{2, []Event{
+		Event{voice.primitives[2], rational.Zero},
+		Event{voice.primitives[3], rational.New(1, 4)},
+	}}
+
+	checkBar(bars[0], bar1, t)
+	checkBar(bars[1], bar2, t)
 }
 
 func checkBar(received, expected Bar, t *testing.T) {
