@@ -10,15 +10,15 @@ type NoteIndex int
 
 type Pitch struct {
 	pitched bool
-	octave Octave
-	index  NoteIndex
+	octave  Octave
+	index   NoteIndex
 }
 
 func New(octave, index int) Pitch {
 	return Pitch{true, Octave(octave), NoteIndex(abs(index))}
 }
 
-func (p Pitch) Octave() Octave	{
+func (p Pitch) Octave() Octave {
 	return p.octave
 }
 
@@ -26,7 +26,7 @@ func (p Pitch) Index() NoteIndex {
 	return p.index
 }
 
-func (p Pitch) Pitched() bool	{
+func (p Pitch) Pitched() bool {
 	return p.pitched
 }
 

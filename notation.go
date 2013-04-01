@@ -131,7 +131,7 @@ type Stack struct {
 	tags     Attributes
 }
 
-func (l Stack) Pitch()  pitch.Pitch {
+func (l Stack) Pitch() pitch.Pitch {
 	return pitch.Unpitched
 }
 

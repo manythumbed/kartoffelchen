@@ -1,12 +1,24 @@
 package kartoffelchen
 
 import (
+	"github.com/manythumbed/kartoffelchen/pitch"
 	"github.com/manythumbed/kartoffelchen/rational"
 	"testing"
 )
 
 func TestBars(t *testing.T) {
-	voice := NewLine(Untagged, note(4, 0, 1, 4), note(4, 1, 1, 2), rest(1, 2), note(4, 0, 1, 4))
+	c := pitch.New(4, 0)
+	cs := pitch.New(4, 1)
+	qn := rational.New(1, 4)
+	hn := rational.New(1, 2)
+	none := Untagged
+
+	voice := NewLine(none,
+		Note{c, qn, none},
+		Note{cs, hn, none},
+		Rest{hn, none},
+		Note{c, qn, none},
+	)
 	bars := Bars(signature(3, 4), rational.Zero, voice)
 
 	if len(bars) != 2 {
