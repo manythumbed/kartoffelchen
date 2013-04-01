@@ -12,7 +12,7 @@ func TestRest(t *testing.T) {
 		t.Errorf("Rest length should be 1, was given %v", r.Duration())
 	}
 
-	if p, _ := r.Pitch(); p != false {
+	if r.Pitch().Pitched() != false {
 		t.Errorf("A rest has no pitch")
 	}
 }

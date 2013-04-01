@@ -15,4 +15,8 @@ func TestTranspose(t *testing.T) {
 	if p.Transpose(-1) != New(3, 11) {
 		t.Errorf("Should transpose correctly")
 	}
+
+	if Unpitched.Transpose(1) != Unpitched {
+		t.Errorf("Unpitched should always transpose to Unpitched")
+	}
 }

@@ -19,7 +19,7 @@ var Untagged = MetaData{}
 //
 // Events are the musical events that make up the element.
 type Element interface {
-	Pitch() (bool, pitch.Pitch)
+	Pitch() pitch.Pitch
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
 	Tags() MetaData
@@ -44,8 +44,8 @@ func rest(upper, lower int) Rest {
 	return Rest{rational.New(upper, lower), MetaData{}}
 }
 
-func (r Rest) Pitch() (bool, pitch.Pitch) {
-	return false, pitch.Unpitched
+func (r Rest) Pitch() pitch.Pitch {
+	return pitch.Unpitched
 }
 
 func (r Rest) Duration() rational.Rational {
@@ -74,8 +74,8 @@ func note(octave, index, upper, lower int) Note {
 	return Note{pitch.New(octave, index), rational.New(upper, lower), MetaData{}}
 }
 
-func (n Note) Pitch() (bool, pitch.Pitch) {
-	return true, n.pitch
+func (n Note) Pitch() pitch.Pitch {
+	return n.pitch
 }
 
 func (n Note) Duration() rational.Rational {
@@ -95,8 +95,8 @@ type Line struct {
 	tags     MetaData
 }
 
-func (l Line) Pitch() (bool, pitch.Pitch) {
-	return false, pitch.Unpitched
+func (l Line) Pitch() pitch.Pitch {
+	return pitch.Unpitched
 }
 
 func (l Line) Duration() rational.Rational {
@@ -131,8 +131,8 @@ type Stack struct {
 	tags     MetaData
 }
 
-func (l Stack) Pitch() (bool, pitch.Pitch) {
-	return false, pitch.Unpitched
+func (l Stack) Pitch()  pitch.Pitch {
+	return pitch.Unpitched
 }
 
 func (l Stack) Duration() rational.Rational {
