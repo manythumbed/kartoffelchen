@@ -34,12 +34,14 @@ func before(a, b rational.Rational) bool {
 	return rational.Less(a, b)
 }
 
-func Bars(signature TimeSignature, initialPosition rational.Rational, element Primitive) []Bar {
+func Bars(signature TimeSignature, initialPosition rational.Rational, element Element) []Bar {
 	bars := []Bar{}
 	eventList := events(element.Events(initialPosition))
 	sort.Sort(eventList)
+
 	limit := rational.Add(initialPosition, signature.asRational())
 	bar := Bar{1, []Event{}}
+
 	for _, e := range eventList {
 		if !before(e.Position, limit) {
 			limit = rational.Add(limit, signature.asRational())

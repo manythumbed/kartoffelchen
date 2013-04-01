@@ -10,7 +10,7 @@ type MetaData []string
 
 var Untagged = MetaData{}
 
-// Primitive is the interface that provides the basic methods used by musical elements.
+// Element is the interface that provides the basic methods used by musical elements.
 //
 // Pitch returns true if the element is pitched with the associated pitch. If the element is
 // unpitched it will return false.
@@ -18,7 +18,7 @@ var Untagged = MetaData{}
 // Duration is the duration of the element. An element with no duration should return rational.Zero.
 //
 // Events are the musical events that make up the element.
-type Primitive interface {
+type Element interface {
 	Pitch() (bool, pitch.Pitch)
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
@@ -27,12 +27,12 @@ type Primitive interface {
 
 // Event represents a musical element with an associated position in time.
 type Event struct {
-	Primitive
+	Element
 	Position rational.Rational
 }
 
 func (e Event) String() string {
-	return fmt.Sprintf("%s-%s", e.Primitive, e.Position)
+	return fmt.Sprintf("%s-%s", e.Element, e.Position)
 }
 
 type Rest struct {
@@ -91,8 +91,8 @@ func (n Note) Tags() MetaData {
 }
 
 type Line struct {
-	primitives []Primitive
-	tags       MetaData
+	elements []Element
+	tags     MetaData
 }
 
 func (l Line) Pitch() (bool, pitch.Pitch) {
@@ -101,8 +101,8 @@ func (l Line) Pitch() (bool, pitch.Pitch) {
 
 func (l Line) Duration() rational.Rational {
 	d := rational.Zero
-	for _, p := range l.primitives {
-		d = rational.Add(d, p.Duration())
+	for _, e := range l.elements {
+		d = rational.Add(d, e.Duration())
 	}
 
 	return d
@@ -110,9 +110,9 @@ func (l Line) Duration() rational.Rational {
 
 func (l Line) Events(start rational.Rational) []Event {
 	e := []Event{}
-	for _, p := range l.primitives {
-		e = append(e, p.Events(start)...)
-		start = rational.Add(start, p.Duration())
+	for _, v := range l.elements {
+		e = append(e, v.Events(start)...)
+		start = rational.Add(start, v.Duration())
 	}
 
 	return e
@@ -122,13 +122,13 @@ func (l Line) Tags() MetaData {
 	return l.tags
 }
 
-func NewLine(m MetaData, primitives ...Primitive) Line {
-	return Line{primitives, m}
+func NewLine(m MetaData, elements ...Element) Line {
+	return Line{elements, m}
 }
 
 type Stack struct {
-	primitives []Primitive
-	tags       MetaData
+	elements []Element
+	tags     MetaData
 }
 
 func (l Stack) Pitch() (bool, pitch.Pitch) {
@@ -137,9 +137,9 @@ func (l Stack) Pitch() (bool, pitch.Pitch) {
 
 func (l Stack) Duration() rational.Rational {
 	d := rational.Zero
-	for _, p := range l.primitives {
-		if rational.Greater(p.Duration(), d) {
-			d = p.Duration()
+	for _, v := range l.elements {
+		if rational.Greater(v.Duration(), d) {
+			d = v.Duration()
 		}
 	}
 
@@ -148,8 +148,8 @@ func (l Stack) Duration() rational.Rational {
 
 func (s Stack) Events(start rational.Rational) []Event {
 	e := []Event{}
-	for _, p := range s.primitives {
-		e = append(e, p.Events(start)...)
+	for _, v := range s.elements {
+		e = append(e, v.Events(start)...)
 	}
 
 	return e
@@ -159,8 +159,8 @@ func (s Stack) Tags() MetaData {
 	return s.tags
 }
 
-func NewStack(m MetaData, primitives ...Primitive) Stack {
-	return Stack{primitives, m}
+func NewStack(m MetaData, elements ...Element) Stack {
+	return Stack{elements, m}
 }
 
 func position(initial, duration rational.Rational) rational.Rational {

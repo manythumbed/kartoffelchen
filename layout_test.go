@@ -14,13 +14,13 @@ func TestBars(t *testing.T) {
 	}
 
 	bar1 := Bar{1, []Event{
-		Event{voice.primitives[0], rational.Zero},
-		Event{voice.primitives[1], rational.New(1, 4)},
+		Event{voice.elements[0], rational.Zero},
+		Event{voice.elements[1], rational.New(1, 4)},
 	}}
 
 	bar2 := Bar{2, []Event{
-		Event{voice.primitives[2], rational.Zero},
-		Event{voice.primitives[3], rational.New(1, 4)},
+		Event{voice.elements[2], rational.Zero},
+		Event{voice.elements[3], rational.New(1, 4)},
 	}}
 
 	checkBar(bars[0], bar1, t)
