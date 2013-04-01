@@ -40,10 +40,6 @@ type Rest struct {
 	tags     Attributes
 }
 
-func rest(upper, lower int) Rest {
-	return Rest{rational.New(upper, lower), Attributes{}}
-}
-
 func (r Rest) Pitch() pitch.Pitch {
 	return pitch.Unpitched
 }
@@ -68,10 +64,6 @@ type Note struct {
 	pitch    pitch.Pitch
 	duration rational.Rational
 	tags     Attributes
-}
-
-func note(octave, index, upper, lower int) Note {
-	return Note{pitch.New(octave, index), rational.New(upper, lower), Attributes{}}
 }
 
 func (n Note) Pitch() pitch.Pitch {

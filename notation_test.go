@@ -1,12 +1,20 @@
 package kartoffelchen
 
 import (
+	"github.com/manythumbed/kartoffelchen/pitch"
 	"github.com/manythumbed/kartoffelchen/rational"
 	"testing"
 )
 
+var (
+	c  = pitch.New(4, 0)
+	qn = rational.New(1, 4)
+	hn = rational.New(1, 2)
+	wn = rational.New(4, 4)
+)
+
 func TestRest(t *testing.T) {
-	r := rest(4, 4)
+	r := Rest{wn, Untagged}
 
 	if r.Duration() != rational.New(4, 4) {
 		t.Errorf("Rest length should be 1, was given %v", r.Duration())
@@ -18,7 +26,7 @@ func TestRest(t *testing.T) {
 }
 
 func TestNote(t *testing.T) {
-	n := note(4, 2, 4, 4)
+	n := Note{c, wn, Untagged}
 
 	if n.Duration() != rational.New(4, 4) {
 		t.Errorf("Note length should be 2, was given %v", n.Duration())
@@ -27,8 +35,11 @@ func TestNote(t *testing.T) {
 }
 
 func TestLine(t *testing.T) {
-	a := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
-	b := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	r1 := Rest{qn, Untagged}
+	r2 := Rest{hn, Untagged}
+
+	a := Line{[]Element{r1, r2, r1}, Attributes{}}
+	b := Line{[]Element{r1, r2, r1}, Attributes{}}
 	c := Line{[]Element{a, b}, Attributes{}}
 
 	e := c.Events(rational.Zero)
@@ -45,8 +56,11 @@ func TestLine(t *testing.T) {
 }
 
 func TestStack(t *testing.T) {
-	a := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
-	b := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	r1 := Rest{qn, Untagged}
+	r2 := Rest{hn, Untagged}
+
+	a := Stack{[]Element{r1, r2, r1}, Attributes{}}
+	b := Stack{[]Element{r1, r2, r1}, Attributes{}}
 	c := Stack{[]Element{a, b}, Attributes{}}
 
 	e := c.Events(rational.Zero)
