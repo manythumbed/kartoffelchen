@@ -2,7 +2,7 @@ package kartoffelchen
 
 import (
 	"bitbucket.org/zombiezen/gopdf/pdf"
-	"github.com/manythumbed/kartoffelchen/rational"
+	"github.com/manythumbed/kartoffelchen/time"
 	"sort"
 )
 
@@ -11,40 +11,23 @@ type Bar struct {
 	Events []Event
 }
 
-type TimeSignature struct {
-	upper int
-	lower rational.Rational
-}
-
-func (t TimeSignature) asRational() rational.Rational {
-	return rational.Scale(rational.New(t.upper, 1), t.lower)
-}
-
-func signature(upper, lower int) TimeSignature {
-	return TimeSignature{upper, rational.New(1, lower)}
-}
-
 type events []Event
 
 func (e events) Len() int           { return len(e) }
 func (e events) Swap(i, j int)      { e[i], e[j] = e[j], e[i] }
-func (e events) Less(i, j int) bool { return rational.Less(e[i].Position, e[j].Position) }
+func (e events) Less(i, j int) bool { return e[i].Position.Less(e[j].Position) }
 
-func before(a, b rational.Rational) bool {
-	return rational.Less(a, b)
-}
-
-func Bars(signature TimeSignature, initialPosition rational.Rational, element Element) []Bar {
+func Bars(signature time.TimeSignature, start time.Position, element Element) []Bar {
 	bars := []Bar{}
-	eventList := events(element.Events(initialPosition))
+	eventList := events(element.Events(start))
 	sort.Sort(eventList)
 
-	limit := rational.Add(initialPosition, signature.asRational())
+	limit := start.Add(signature.DurationOfBar())
 	bar := Bar{1, []Event{}}
 
 	for _, e := range eventList {
-		if !before(e.Position, limit) {
-			limit = rational.Add(limit, signature.asRational())
+		if !e.Position.Less(limit) {
+			limit = limit.Add(signature.DurationOfBar())
 			bars = append(bars, bar)
 			bar = Bar{bar.Number + 1, []Event{}}
 		}

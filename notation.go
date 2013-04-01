@@ -3,7 +3,7 @@ package kartoffelchen
 import (
 	"fmt"
 	"github.com/manythumbed/kartoffelchen/pitch"
-	"github.com/manythumbed/kartoffelchen/rational"
+	"github.com/manythumbed/kartoffelchen/time"
 )
 
 type Attributes []string
@@ -15,20 +15,21 @@ var Untagged = Attributes{}
 // Pitch returns true if the element is pitched with the associated pitch. If the element is
 // unpitched it will return false.
 //
-// Duration is the duration of the element. An element with no duration should return rational.Zero.
+// Duration is the duration of the element. An element with no duration should 
+// return time.NoDuration().
 //
 // Events are the musical events that make up the element.
 type Element interface {
 	Pitch() pitch.Pitch
-	Duration() rational.Rational
-	Events(rational.Rational) []Event
+	Duration() time.Duration
+	Events(time.Position) []Event
 	Tags() Attributes
 }
 
 // Event represents a musical element with an associated position in time.
 type Event struct {
 	Element
-	Position rational.Rational
+	Position time.Position
 }
 
 func (e Event) String() string {
@@ -36,7 +37,7 @@ func (e Event) String() string {
 }
 
 type Rest struct {
-	duration rational.Rational
+	duration time.Duration
 	tags     Attributes
 }
 
@@ -44,7 +45,7 @@ func (r Rest) Pitch() pitch.Pitch {
 	return pitch.Unpitched
 }
 
-func (r Rest) Duration() rational.Rational {
+func (r Rest) Duration() time.Duration	{
 	return r.duration
 }
 
@@ -52,7 +53,7 @@ func (r Rest) Tags() Attributes {
 	return r.tags
 }
 
-func (r Rest) Events(start rational.Rational) []Event {
+func (r Rest) Events(start time.Position) []Event {
 	return []Event{Event{r, start}}
 }
 
@@ -62,7 +63,7 @@ func (r Rest) String() string {
 
 type Note struct {
 	pitch    pitch.Pitch
-	duration rational.Rational
+	duration time.Duration
 	tags     Attributes
 }
 
@@ -70,11 +71,11 @@ func (n Note) Pitch() pitch.Pitch {
 	return n.pitch
 }
 
-func (n Note) Duration() rational.Rational {
+func (n Note) Duration() time.Duration {
 	return n.duration
 }
 
-func (n Note) Events(start rational.Rational) []Event {
+func (n Note) Events(start time.Position) []Event {
 	return []Event{Event{n, start}}
 }
 
@@ -91,20 +92,20 @@ func (l Line) Pitch() pitch.Pitch {
 	return pitch.Unpitched
 }
 
-func (l Line) Duration() rational.Rational {
-	d := rational.Zero
+func (l Line) Duration() time.Duration {
+	d := time.NoDuration()
 	for _, e := range l.elements {
-		d = rational.Add(d, e.Duration())
+		d = d.Add(e.Duration())
 	}
 
 	return d
 }
 
-func (l Line) Events(start rational.Rational) []Event {
+func (l Line) Events(start time.Position) []Event {
 	e := []Event{}
 	for _, v := range l.elements {
 		e = append(e, v.Events(start)...)
-		start = rational.Add(start, v.Duration())
+		start = start.Add(v.Duration())
 	}
 
 	return e
@@ -127,10 +128,10 @@ func (l Stack) Pitch() pitch.Pitch {
 	return pitch.Unpitched
 }
 
-func (l Stack) Duration() rational.Rational {
-	d := rational.Zero
+func (l Stack) Duration() time.Duration {
+	d := time.NoDuration()
 	for _, v := range l.elements {
-		if rational.Greater(v.Duration(), d) {
+		if v.Duration().Greater(d) {
 			d = v.Duration()
 		}
 	}
@@ -138,7 +139,7 @@ func (l Stack) Duration() rational.Rational {
 	return d
 }
 
-func (s Stack) Events(start rational.Rational) []Event {
+func (s Stack) Events(start time.Position) []Event {
 	e := []Event{}
 	for _, v := range s.elements {
 		e = append(e, v.Events(start)...)
@@ -153,8 +154,4 @@ func (s Stack) Tags() Attributes {
 
 func NewStack(m Attributes, elements ...Element) Stack {
 	return Stack{elements, m}
-}
-
-func position(initial, duration rational.Rational) rational.Rational {
-	return rational.Add(initial, duration)
 }
