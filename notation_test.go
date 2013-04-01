@@ -27,9 +27,9 @@ func TestNote(t *testing.T) {
 }
 
 func TestLine(t *testing.T) {
-	a := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
-	b := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
-	c := Line{[]Element{a, b}, MetaData{}}
+	a := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	b := Line{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	c := Line{[]Element{a, b}, Attributes{}}
 
 	e := c.Events(rational.Zero)
 	if l := len(e); l != 6 {
@@ -45,9 +45,9 @@ func TestLine(t *testing.T) {
 }
 
 func TestStack(t *testing.T) {
-	a := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
-	b := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, MetaData{}}
-	c := Stack{[]Element{a, b}, MetaData{}}
+	a := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	b := Stack{[]Element{rest(1, 4), rest(1, 2), rest(1, 4)}, Attributes{}}
+	c := Stack{[]Element{a, b}, Attributes{}}
 
 	e := c.Events(rational.Zero)
 	if l := len(e); l != 6 {

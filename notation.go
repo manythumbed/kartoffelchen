@@ -6,9 +6,9 @@ import (
 	"github.com/manythumbed/kartoffelchen/rational"
 )
 
-type MetaData []string
+type Attributes []string
 
-var Untagged = MetaData{}
+var Untagged = Attributes{}
 
 // Element is the interface that provides the basic methods used by musical elements.
 //
@@ -22,7 +22,7 @@ type Element interface {
 	Pitch() pitch.Pitch
 	Duration() rational.Rational
 	Events(rational.Rational) []Event
-	Tags() MetaData
+	Tags() Attributes
 }
 
 // Event represents a musical element with an associated position in time.
@@ -37,11 +37,11 @@ func (e Event) String() string {
 
 type Rest struct {
 	duration rational.Rational
-	tags     MetaData
+	tags     Attributes
 }
 
 func rest(upper, lower int) Rest {
-	return Rest{rational.New(upper, lower), MetaData{}}
+	return Rest{rational.New(upper, lower), Attributes{}}
 }
 
 func (r Rest) Pitch() pitch.Pitch {
@@ -52,7 +52,7 @@ func (r Rest) Duration() rational.Rational {
 	return r.duration
 }
 
-func (r Rest) Tags() MetaData {
+func (r Rest) Tags() Attributes {
 	return r.tags
 }
 
@@ -67,11 +67,11 @@ func (r Rest) String() string {
 type Note struct {
 	pitch    pitch.Pitch
 	duration rational.Rational
-	tags     MetaData
+	tags     Attributes
 }
 
 func note(octave, index, upper, lower int) Note {
-	return Note{pitch.New(octave, index), rational.New(upper, lower), MetaData{}}
+	return Note{pitch.New(octave, index), rational.New(upper, lower), Attributes{}}
 }
 
 func (n Note) Pitch() pitch.Pitch {
@@ -86,13 +86,13 @@ func (n Note) Events(start rational.Rational) []Event {
 	return []Event{Event{n, start}}
 }
 
-func (n Note) Tags() MetaData {
+func (n Note) Tags() Attributes {
 	return n.tags
 }
 
 type Line struct {
 	elements []Element
-	tags     MetaData
+	tags     Attributes
 }
 
 func (l Line) Pitch() pitch.Pitch {
@@ -118,17 +118,17 @@ func (l Line) Events(start rational.Rational) []Event {
 	return e
 }
 
-func (l Line) Tags() MetaData {
+func (l Line) Tags() Attributes {
 	return l.tags
 }
 
-func NewLine(m MetaData, elements ...Element) Line {
+func NewLine(m Attributes, elements ...Element) Line {
 	return Line{elements, m}
 }
 
 type Stack struct {
 	elements []Element
-	tags     MetaData
+	tags     Attributes
 }
 
 func (l Stack) Pitch()  pitch.Pitch {
@@ -155,11 +155,11 @@ func (s Stack) Events(start rational.Rational) []Event {
 	return e
 }
 
-func (s Stack) Tags() MetaData {
+func (s Stack) Tags() Attributes {
 	return s.tags
 }
 
-func NewStack(m MetaData, elements ...Element) Stack {
+func NewStack(m Attributes, elements ...Element) Stack {
 	return Stack{elements, m}
 }
 
