@@ -14,5 +14,5 @@ const (
 )
 
 func NoteSpace(staffHeight float32) float32 {
-	return staffHeight / 5
+	return staffHeight / 4
 }
