@@ -2,6 +2,7 @@ package main
 
 import (
 	"bitbucket.org/zombiezen/gopdf/pdf"
+	"github.com/manythumbed/kartoffelchen/engraving"
 	"fmt"
 	"os"
 )
@@ -21,18 +22,11 @@ func main() {
 	path.Rectangle(pdf.Rectangle{bottomLeft, topRight})
 	canvas.Stroke(path)
 
-	/*
-	path := new(pdf.Path)
-	path.Move(pdf.Point{0, 0})
-	path.Line(pdf.Point{100, 0})
-	canvas.Stroke(path)
+	staffOrigin := pdf.Point{bottomLeft.X + pdf.Unit(10), bottomLeft.Y + pdf.Unit(10)}
+	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.97 * pdf.Cm, 0.1 * pdf.Pt, canvas)
 
-	text := new(pdf.Text)
-	text.SetFont(pdf.Helvetica, 14)
-	text.Text("Hello, World!")
-	canvas.DrawText(text)
-	*/
-
+	staffOrigin.Y = staffOrigin.Y + 5 * pdf.Cm
+	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.37 * pdf.Cm, 0.1 * pdf.Pt, canvas)
 	canvas.Close()
 
 	err := doc.Encode(os.Stdout)
