@@ -23,12 +23,32 @@ func main() {
 	canvas.Stroke(path)
 
 	staffOrigin := pdf.Point{bottomLeft.X + pdf.Unit(10), bottomLeft.Y + pdf.Unit(500)}
-	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.97 * pdf.Cm, 0.1 * pdf.Pt, canvas)
 
-	engraving.EngraveSurrogateNoteHead(staffOrigin, 0.1 * pdf.Cm, canvas)
+	largeStaff := engraving.NewStaffSpec(engraving.RastralZero)
+	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, largeStaff.Height(), 0.1 * pdf.Pt, canvas)
 
+	engraving.EngraveSurrogateNoteHead(staffOrigin, largeStaff.StaffSpace(), canvas)
+
+	nextNote := pdf.Point{}
+	nextNote.X = pdf.Unit(staffOrigin.X + largeStaff.StaffSpace())
+	nextNote.Y = pdf.Unit(staffOrigin.Y + largeStaff.IndexOffset(0))
+	engraving.EngraveSurrogateNoteHead(nextNote, largeStaff.StaffSpace(), canvas)
+
+	nextNote.X = pdf.Unit(staffOrigin.X + (2 * largeStaff.StaffSpace()))
+	nextNote.Y = pdf.Unit(staffOrigin.Y + largeStaff.IndexOffset(7))
+	engraving.EngraveSurrogateNoteHead(nextNote, largeStaff.StaffSpace(), canvas)
+
+	nextNote.X = pdf.Unit(staffOrigin.X + (3 * largeStaff.StaffSpace()))
+	nextNote.Y = pdf.Unit(staffOrigin.Y + largeStaff.IndexOffset(-1))
+	engraving.EngraveSurrogateNoteHead(nextNote, largeStaff.StaffSpace(), canvas)
+
+	nextNote.X = pdf.Unit(staffOrigin.X + (4 * largeStaff.StaffSpace()))
+	nextNote.Y = pdf.Unit(staffOrigin.Y + largeStaff.IndexOffset(2))
+	engraving.EngraveSurrogateNoteHead(nextNote, largeStaff.StaffSpace(), canvas)
+
+	smallStaff := engraving.NewStaffSpec(engraving.RastralEight)
 	staffOrigin.Y = staffOrigin.Y + 5 * pdf.Cm
-	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.37 * pdf.Cm, 0.1 * pdf.Pt, canvas)
+	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, smallStaff.Height(), 0.1 * pdf.Pt, canvas)
 	canvas.Close()
 
 	err := doc.Encode(os.Stdout)

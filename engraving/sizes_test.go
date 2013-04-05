@@ -7,7 +7,7 @@ import (
 
 func TestNoteSpace(t *testing.T) {
 	n := StaffSpace(RastralZero)
-	if !equal(2.30, n, 0.0001) {
+	if !equal(0.230, n, 0.0001) {
 		t.Errorf("Incorrect note spacing, expected %3.6f received %3.6f", 2.30, n)
 	}
 }
