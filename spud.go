@@ -2,8 +2,8 @@ package main
 
 import (
 	"bitbucket.org/zombiezen/gopdf/pdf"
-	"github.com/manythumbed/kartoffelchen/engraving"
 	"fmt"
+	"github.com/manythumbed/kartoffelchen/engraving"
 	"os"
 )
 
@@ -25,7 +25,7 @@ func main() {
 	staffOrigin := pdf.Point{bottomLeft.X + pdf.Unit(10), bottomLeft.Y + pdf.Unit(500)}
 
 	largeStaff := engraving.NewStaffSpec(engraving.RastralZero)
-	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, largeStaff.Height(), 0.1 * pdf.Pt, canvas)
+	engraving.EngraveStaff(staffOrigin, 12*pdf.Cm, largeStaff.Height(), 0.1*pdf.Pt, canvas)
 
 	engraving.EngraveSurrogateNoteHead(staffOrigin, largeStaff.StaffSpace(), canvas)
 
@@ -47,8 +47,8 @@ func main() {
 	engraving.EngraveSurrogateNoteHead(nextNote, largeStaff.StaffSpace(), canvas)
 
 	smallStaff := engraving.NewStaffSpec(engraving.RastralEight)
-	staffOrigin.Y = staffOrigin.Y + 5 * pdf.Cm
-	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, smallStaff.Height(), 0.1 * pdf.Pt, canvas)
+	staffOrigin.Y = staffOrigin.Y + 5*pdf.Cm
+	engraving.EngraveStaff(staffOrigin, 12*pdf.Cm, smallStaff.Height(), 0.1*pdf.Pt, canvas)
 	canvas.Close()
 
 	err := doc.Encode(os.Stdout)

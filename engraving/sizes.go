@@ -21,11 +21,11 @@ func StaffSpace(staffHeight float32) float32 {
 	return staffHeight / 4
 }
 
-type StaffSpec struct	{
+type StaffSpec struct {
 	height pdf.Unit
 }
 
-func NewStaffSpec(height pdf.Unit) StaffSpec	{
+func NewStaffSpec(height pdf.Unit) StaffSpec {
 	return StaffSpec{height}
 }
 
@@ -33,11 +33,11 @@ func (s StaffSpec) Height() pdf.Unit {
 	return s.height
 }
 
-func (s StaffSpec) StaffSpace() pdf.Unit	{
+func (s StaffSpec) StaffSpace() pdf.Unit {
 	return pdf.Unit(s.height / 4)
 }
 
-func (s StaffSpec) IndexOffset(index int) pdf.Unit	{
+func (s StaffSpec) IndexOffset(index int) pdf.Unit {
 	offset := pdf.Unit(s.StaffSpace() / 2)
-	return  pdf.Unit(index - 1) * offset
+	return pdf.Unit(index-1) * offset
 }
