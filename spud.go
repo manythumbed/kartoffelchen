@@ -22,8 +22,10 @@ func main() {
 	path.Rectangle(pdf.Rectangle{bottomLeft, topRight})
 	canvas.Stroke(path)
 
-	staffOrigin := pdf.Point{bottomLeft.X + pdf.Unit(10), bottomLeft.Y + pdf.Unit(10)}
+	staffOrigin := pdf.Point{bottomLeft.X + pdf.Unit(10), bottomLeft.Y + pdf.Unit(500)}
 	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.97 * pdf.Cm, 0.1 * pdf.Pt, canvas)
+
+	engraving.EngraveSurrogateNoteHead(staffOrigin, 0.1 * pdf.Cm, canvas)
 
 	staffOrigin.Y = staffOrigin.Y + 5 * pdf.Cm
 	engraving.EngraveStaff(staffOrigin, 12 * pdf.Cm, 0.37 * pdf.Cm, 0.1 * pdf.Pt, canvas)

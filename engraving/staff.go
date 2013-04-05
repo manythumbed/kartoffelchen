@@ -9,9 +9,9 @@ func EngraveStaff(origin pdf.Point, width, height, lineWidth pdf.Unit, canvas *p
 
 	noteHeight := pdf.Unit(height / 4)
 	for i := 0; i < 5; i++ {
-		origin.Y = origin.Y + noteHeight
 		path.Move(origin)
 		path.Line(pdf.Point{origin.X + width, origin.Y})
+		origin.Y = origin.Y + noteHeight
 	}
 
 	canvas.Push()

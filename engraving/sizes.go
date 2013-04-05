@@ -13,6 +13,6 @@ const (
 	RastralEight = 3.7
 )
 
-func NoteSpace(staffHeight float32) float32 {
+func StaffSpace(staffHeight float32) float32 {
 	return staffHeight / 4
 }
