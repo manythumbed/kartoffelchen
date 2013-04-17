@@ -54,10 +54,10 @@ func main() {
 	bottom = 10 * pdf.Cm
 	beneath = 6.5 * pdf.Cm
 
-	a = pdf.Point{left, bottom}
+	a = pdf.Point{left, 9 * pdf.Cm}
 	b = pdf.Point{left, top}
 	c = pdf.Point{right, top}
-	d = pdf.Point{right, bottom}
+	d = pdf.Point{right, 11 * pdf.Cm}
 	curve.Move(d)
 	curve.Curve(c, b, a)
 
