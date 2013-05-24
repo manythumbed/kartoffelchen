@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func grid(canvas *pdf.Canvas, x, y, w, h, step float64) {
+func Grid(canvas *pdf.Canvas, x, y, w, h, step float64) {
 	canvas.Push()
 	canvas.SetColor(0.75, 0.75, 0.75)
 	canvas.Translate(unit(x), unit(y))
